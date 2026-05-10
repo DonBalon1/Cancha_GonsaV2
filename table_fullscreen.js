@@ -14,7 +14,7 @@
 
 		viewportMeta.setAttribute(
 			'content',
-			'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+			'width=device-width, initial-scale=0.6, minimum-scale=0.25, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
 		);
 	}
 
