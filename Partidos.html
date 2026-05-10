@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cancha Gonsa | Partidos</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--green-soft: #7ce7a2;
+			--green: #35c759;
+			--yellow: #f4c430;
+			--red: #ff5d5d;
+			--blue: #53b8ff;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--max-width: 1400px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			color-scheme: dark;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 32px), var(--max-width));
+			margin: 0 auto;
+			padding: 28px 0 40px;
+		}
+
+		.hero {
+			margin-bottom: 18px;
+		}
+
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.2rem, 4vw, 3.4rem);
+			line-height: 1;
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.filters-bar {
+			display: flex;
+			align-items: end;
+			gap: 14px;
+			padding: 18px 18px 0;
+			flex-wrap: wrap;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 170px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.filter-select:focus {
+			border-color: rgba(83, 184, 255, 0.45);
+			box-shadow: 0 0 0 3px rgba(83, 184, 255, 0.12);
+		}
+
+		.filter-select:disabled {
+			opacity: 0.55;
+			cursor: not-allowed;
+		}
+
+		.filters-summary {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-left: auto;
+		}
+
+		.filter-chip {
+			padding: 10px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.035);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.filter-chip strong {
+			color: var(--text);
+		}
+
+		.matches-shell {
+			padding: 18px;
+		}
+
+		.matches-list {
+			display: grid;
+			gap: 16px;
+		}
+
+		.match-card {
+			border-radius: var(--radius-lg);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			background: rgba(255, 255, 255, 0.025);
+			overflow: hidden;
+		}
+
+		.match-card:hover {
+			border-color: rgba(83, 184, 255, 0.16);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.05);
+		}
+
+		.match-card__layout {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			gap: 14px;
+			align-items: center;
+			padding: 16px 18px;
+		}
+
+		.match-card__meta {
+			display: grid;
+			gap: 6px;
+			min-width: 0;
+		}
+
+		.match-card__eyebrow {
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.match-card__title {
+			margin: 0;
+			font-size: 1.12rem;
+			font-weight: 700;
+		}
+
+		.match-card__score {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			min-width: 136px;
+			padding: 12px 16px;
+			border-radius: 16px;
+			background: rgba(8, 14, 26, 0.72);
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			font-size: clamp(1.65rem, 3vw, 2.35rem);
+			font-weight: 800;
+			letter-spacing: -0.05em;
+			line-height: 1;
+			align-self: center;
+		}
+
+		.match-card__score-separator {
+			color: rgba(255, 255, 255, 0.42);
+		}
+
+		.match-card__actions {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			align-self: center;
+		}
+
+		.match-card__link {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 14px;
+			min-height: 44px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			font-weight: 600;
+			white-space: nowrap;
+		}
+
+		.match-card__footer {
+			display: flex;
+			gap: 8px;
+			padding: 12px 18px 14px;
+			color: var(--muted);
+			font-size: 0.9rem;
+			border-top: 1px solid rgba(255, 255, 255, 0.04);
+			flex-wrap: wrap;
+		}
+
+		.match-card__footer-label {
+			color: #ffd84f;
+			font-weight: 700;
+		}
+
+		.match-card__footer-value {
+			color: var(--text);
+		}
+
+		.empty-state {
+			padding: 42px 18px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			display: block;
+			margin-bottom: 8px;
+			color: var(--text);
+			font-size: 1rem;
+		}
+
+		@media (max-width: 1000px) {
+			.filters-summary {
+				width: 100%;
+				margin-left: 0;
+			}
+
+			.matches-shell {
+				padding: 16px;
+			}
+
+			.match-card__layout {
+				grid-template-columns: 1fr;
+			}
+
+			.match-card__score,
+			.match-card__actions {
+				justify-self: start;
+				align-self: start;
+			}
+		}
+
+		@media (max-width: 700px) {
+			.app-shell {
+				width: min(calc(100% - 20px), var(--max-width));
+				padding-top: 20px;
+			}
+
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				padding: 6px;
+				margin-bottom: 16px;
+				width: 100%;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.tab {
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+				flex: 0 0 auto;
+			}
+
+			.filters-bar {
+				padding: 16px 16px 0;
+				gap: 12px;
+			}
+
+			.filter-field {
+				min-width: 100%;
+			}
+
+			.filters-summary {
+				gap: 8px;
+			}
+
+			.filter-chip {
+				width: 100%;
+				display: inline-flex;
+				justify-content: space-between;
+			}
+
+			.matches-shell {
+				padding: 14px;
+			}
+
+			.matches-list {
+				gap: 12px;
+			}
+
+			.match-card {
+				border-radius: 18px;
+			}
+
+			.match-card__layout,
+			.match-card__footer {
+				padding-left: 14px;
+				padding-right: 14px;
+			}
+
+			.match-card__layout {
+				gap: 12px;
+				padding-top: 14px;
+				padding-bottom: 14px;
+			}
+
+			.match-card__meta {
+				gap: 5px;
+			}
+
+			.match-card__title {
+				font-size: 1rem;
+			}
+
+			.match-card__score {
+				min-width: 0;
+				width: 100%;
+				padding: 12px 14px;
+				border-radius: 14px;
+				font-size: clamp(1.8rem, 11vw, 2.35rem);
+			}
+
+			.match-card__actions {
+				width: 100%;
+			}
+
+			.match-card__link {
+				width: 100%;
+				min-height: 42px;
+				font-size: 0.92rem;
+			}
+
+			.match-card__footer {
+				padding-top: 10px;
+				padding-bottom: 12px;
+				font-size: 0.84rem;
+				gap: 6px;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.hero h1 {
+				font-size: clamp(2rem, 10vw, 2.6rem);
+			}
+
+			.matches-shell {
+				padding: 12px;
+			}
+
+			.match-card__layout,
+			.match-card__footer {
+				padding-left: 12px;
+				padding-right: 12px;
+			}
+
+			.match-card__title {
+				font-size: 0.96rem;
+			}
+
+			.match-card__eyebrow {
+				font-size: 0.72rem;
+			}
+
+			.match-card__link {
+				font-size: 0.88rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="true">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<article class="panel">
+			<div class="filters-bar" aria-label="Filtros de partidos">
+				<div class="filter-field">
+					<label for="js-filter-year">Año</label>
+					<select class="filter-select" id="js-filter-year"></select>
+				</div>
+
+				<div class="filter-field">
+					<label for="js-filter-month">Mes</label>
+					<select class="filter-select" id="js-filter-month"></select>
+				</div>
+
+				<div class="filters-summary" aria-live="polite">
+					<span class="filter-chip">Año: <strong id="js-active-year">--</strong></span>
+					<span class="filter-chip">Mes: <strong id="js-active-month">--</strong></span>
+					<span class="filter-chip">Partidos: <strong id="js-total-matches">--</strong></span>
+					<span class="filter-chip">Goles: <strong id="js-total-goals">--</strong></span>
+					<span class="filter-chip">Promedio: <strong id="js-goals-average">--</strong></span>
+				</div>
+			</div>
+
+			<div class="matches-shell">
+				<div class="matches-list" id="js-matches-list">
+					<div class="empty-state">
+						<strong>Preparando historial de partidos</strong>
+						La conexión con Google Sheets se ejecuta al cargar la página.
+					</div>
+				</div>
+			</div>
+		</article>
+	</main>
+
+	<script src="./lector_datos.js"></script>
+	<script src="./Partidos.js"></script>
+</body>
+</html>

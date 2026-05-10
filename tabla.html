@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cancha Gonsa | Tabla General</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--bg-soft: #131a2e;
+			--panel: rgba(19, 26, 46, 0.88);
+			--panel-strong: #171f37;
+			--line: rgba(110, 142, 198, 0.14);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--green-soft: #7ce7a2;
+			--green: #35c759;
+			--yellow: #f4c430;
+			--red: #ff5d5d;
+			--blue: #53b8ff;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--radius-sm: 10px;
+			--max-width: 1400px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			color-scheme: dark;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 32px), var(--max-width));
+			margin: 0 auto;
+			padding: 28px 0 40px;
+		}
+
+		.hero {
+			margin-bottom: 18px;
+		}
+
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.2rem, 4vw, 3.4rem);
+			line-height: 1;
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border: 0;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			cursor: pointer;
+			transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.tab[disabled],
+		.tab--disabled {
+			cursor: not-allowed;
+			opacity: 0.6;
+		}
+
+		.dashboard-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 18px;
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.filters-bar {
+			display: flex;
+			align-items: end;
+			gap: 14px;
+			padding: 18px 18px 0;
+			flex-wrap: wrap;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 170px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.filter-select:focus {
+			border-color: rgba(83, 184, 255, 0.45);
+			box-shadow: 0 0 0 3px rgba(83, 184, 255, 0.12);
+		}
+
+		.filters-summary {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-left: auto;
+		}
+
+		.filter-chip {
+			padding: 10px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.035);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.filter-chip strong {
+			color: var(--text);
+		}
+
+		.dot {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			display: inline-block;
+			flex: 0 0 10px;
+		}
+
+		.dot--green { background: var(--green); }
+		.dot--yellow { background: var(--yellow); }
+		.dot--red { background: var(--red); }
+		.dot--neutral { background: rgba(255, 255, 255, 0.22); }
+
+		.table-wrapper {
+			overflow-x: auto;
+			padding: 12px;
+		}
+
+		.table-scroll-hint {
+			display: none;
+			padding: 0 16px 4px;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		.table-wrapper::-webkit-scrollbar {
+			height: 10px;
+		}
+
+		.table-wrapper::-webkit-scrollbar-thumb {
+			background: rgba(121, 184, 255, 0.2);
+			border-radius: 999px;
+		}
+
+		table {
+			width: 100%;
+			min-width: 1220px;
+			border-collapse: separate;
+			border-spacing: 0;
+			margin: 0;
+		}
+
+		thead th {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			padding: 16px 12px;
+			background: rgba(13, 19, 34, 0.96);
+			color: #79b8ff;
+			border-bottom: 1px solid var(--line);
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			text-align: center;
+			white-space: nowrap;
+		}
+
+		thead tr:first-child th {
+			top: 0;
+			padding: 12px 12px 8px;
+			background: rgba(10, 15, 28, 0.98);
+			color: #97cbff;
+			font-size: 0.7rem;
+		}
+
+		thead tr:nth-child(2) th {
+			top: 42px;
+			padding-top: 10px;
+			padding-bottom: 14px;
+		}
+
+		th.group-heading {
+			border-bottom: 1px solid rgba(83, 184, 255, 0.16);
+		}
+
+		th.group-heading[data-tone="results"] {
+			box-shadow: inset 0 3px 0 rgba(244, 196, 48, 0.9);
+		}
+
+		th.group-heading[data-tone="production"] {
+			box-shadow: inset 0 3px 0 rgba(83, 184, 255, 0.85);
+		}
+
+		th.group-heading[data-tone="participation"] {
+			box-shadow: inset 0 3px 0 rgba(122, 255, 187, 0.75);
+		}
+
+		th.group-heading[data-tone="averages"] {
+			box-shadow: inset 0 3px 0 rgba(204, 159, 255, 0.8);
+		}
+
+		th.subhead-result--g,
+		td.result-cell--g {
+			background: rgba(53, 199, 89, 0.08);
+		}
+
+		th.subhead-result--e,
+		td.result-cell--e {
+			background: rgba(244, 196, 48, 0.1);
+		}
+
+		th.subhead-result--p,
+		td.result-cell--p {
+			background: rgba(255, 93, 93, 0.1);
+		}
+
+		thead th:first-child {
+			border-top-left-radius: var(--radius-lg);
+		}
+
+		thead th:last-child {
+			border-top-right-radius: var(--radius-lg);
+		}
+
+		tbody td {
+			padding: 14px 12px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+			text-align: center;
+			color: var(--text);
+		}
+
+		tbody tr {
+			background: rgba(255, 255, 255, 0.012);
+			transition: background 0.2s ease, transform 0.2s ease;
+		}
+
+		tbody tr:hover {
+			background: rgba(83, 184, 255, 0.05);
+		}
+
+		tbody td.player-cell {
+			text-align: left;
+			min-width: 220px;
+		}
+
+		tbody tr:last-child td:first-child {
+			border-bottom-left-radius: var(--radius-lg);
+		}
+
+		tbody tr:last-child td:last-child {
+			border-bottom-right-radius: var(--radius-lg);
+		}
+
+		.position-cell {
+			width: 84px;
+		}
+
+		.rank-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			min-width: 48px;
+			padding: 10px 12px;
+			border-radius: 14px;
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.28), rgba(83, 184, 255, 0.08));
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			font-weight: 700;
+		}
+
+		.rank-badge[data-rank="1"] {
+			background: linear-gradient(135deg, rgba(255, 220, 82, 0.36), rgba(255, 220, 82, 0.1));
+			border-color: rgba(255, 220, 82, 0.25);
+		}
+
+		.rank-badge[data-rank="2"] {
+			background: linear-gradient(135deg, rgba(144, 199, 255, 0.3), rgba(144, 199, 255, 0.08));
+			border-color: rgba(144, 199, 255, 0.22);
+		}
+
+		.rank-badge[data-rank="3"] {
+			background: linear-gradient(135deg, rgba(255, 161, 96, 0.3), rgba(255, 161, 96, 0.08));
+			border-color: rgba(255, 161, 96, 0.22);
+		}
+
+		.rank-badge__icon {
+			font-size: 1rem;
+		}
+
+		.player {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.player__avatar {
+			width: 44px;
+			height: 44px;
+			border-radius: 14px;
+			object-fit: cover;
+			background: linear-gradient(135deg, #1d2949, #0f162a);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.player__name {
+			display: block;
+			font-weight: 600;
+		}
+
+		.player__meta {
+			display: block;
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.player__info {
+			min-width: 0;
+		}
+
+		.player__name,
+		.player__meta {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.points-value {
+			font-size: 1.2rem;
+			font-weight: 700;
+		}
+
+		.split-result {
+			font-weight: 700;
+			color: var(--text);
+		}
+
+		.metric-stack {
+			display: inline-flex;
+			flex-direction: column;
+			gap: 2px;
+			align-items: center;
+		}
+
+		.metric-stack small {
+			font-size: 0.75rem;
+			color: var(--muted);
+		}
+
+		.form-dots,
+		.goal-dots {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			flex-wrap: nowrap;
+		}
+
+		.form-dots .dot,
+		.goal-dot {
+			width: 12px;
+			height: 12px;
+			flex-basis: 12px;
+		}
+
+		.goal-dot {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			font-size: 0.68rem;
+			font-weight: 700;
+			line-height: 1;
+			color: #09101e;
+		}
+
+		.goal-dot--neutral {
+			background: rgba(255, 255, 255, 0.18);
+			color: rgba(255, 255, 255, 0.6);
+		}
+
+		.align-left {
+			text-align: left;
+		}
+
+		.metric-very-good { color: var(--green); }
+		.metric-good-soft { color: var(--green-soft); }
+		.metric-warn { color: var(--yellow); }
+		.metric-good { color: var(--green); }
+		.metric-mid { color: var(--yellow); }
+		.metric-bad { color: var(--red); }
+
+		.empty-state {
+			padding: 28px 20px 34px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			display: block;
+			margin-bottom: 8px;
+			color: var(--text);
+			font-size: 1rem;
+		}
+
+		@media (max-width: 900px) {
+			.filters-bar {
+				align-items: stretch;
+			}
+
+			.filters-summary {
+				width: 100%;
+				margin-left: 0;
+			}
+
+			table {
+				min-width: 1140px;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.app-shell {
+				width: min(calc(100% - 20px), var(--max-width));
+				padding-top: 20px;
+			}
+
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				padding: 6px;
+				margin-bottom: 16px;
+				width: 100%;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.tab {
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+				flex: 0 0 auto;
+			}
+
+			.filters-bar {
+				padding: 16px 16px 0;
+				gap: 12px;
+			}
+
+			.filter-field {
+				min-width: 100%;
+			}
+
+			.filters-summary {
+				gap: 8px;
+			}
+
+			.filter-chip {
+				width: 100%;
+				justify-content: space-between;
+				display: inline-flex;
+			}
+
+			.table-scroll-hint {
+				display: block;
+			}
+
+			.table-wrapper {
+				padding: 10px 12px 12px;
+			}
+
+			table {
+				min-width: 1080px;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.table-scroll-hint {
+				padding: 0 14px 4px;
+				font-size: 0.78rem;
+			}
+
+			table {
+				min-width: 980px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="true">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<section class="dashboard-grid">
+			<article class="panel" id="js-tabla-panel">
+				<div class="filters-bar" aria-label="Filtros de tabla general">
+					<div class="filter-field">
+						<label for="js-filter-year">Año</label>
+						<select class="filter-select" id="js-filter-year" name="yearFilter"></select>
+					</div>
+
+					<div class="filter-field">
+						<label for="js-filter-min-matches">Mín. PJ</label>
+						<select class="filter-select" id="js-filter-min-matches" name="minMatchesFilter">
+							<option value="0">0+</option>
+							<option value="3" selected>3+</option>
+							<option value="5">5+</option>
+							<option value="10">10+</option>
+						</select>
+					</div>
+
+					<div class="filters-summary" aria-live="polite">
+						<span class="filter-chip">Año: <strong id="js-active-year">--</strong></span>
+						<span class="filter-chip">Mín. PJ: <strong id="js-active-min-matches">3+</strong></span>
+					</div>
+				</div>
+
+					<div class="table-scroll-hint">Deslizá horizontalmente para ver toda la tabla.</div>
+
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th scope="col" rowspan="2">#</th>
+								<th scope="col" rowspan="2">Jugador</th>
+								<th scope="col" rowspan="2">Puntos</th>
+								<th class="group-heading" data-tone="results" scope="col" colspan="3">Resultados</th>
+								<th class="group-heading" data-tone="production" scope="col" colspan="3">Producción</th>
+								<th class="group-heading" data-tone="participation" scope="col" colspan="2">Participación</th>
+								<th class="group-heading" data-tone="averages" scope="col" colspan="2">Promedios</th>
+								<th scope="col" rowspan="2">Rendimiento</th>
+								<th scope="col" rowspan="2">Goleómetro</th>
+							</tr>
+							<tr>
+								<th class="subhead-result--g" scope="col">G</th>
+								<th class="subhead-result--e" scope="col">E</th>
+								<th class="subhead-result--p" scope="col">P</th>
+								<th scope="col">Goles</th>
+								<th scope="col">Efect. Gol</th>
+								<th scope="col">Dif. Gol</th>
+								<th scope="col">% Victorias</th>
+								<th scope="col">% Presencias</th>
+								<th scope="col">PxP</th>
+								<th scope="col">GxP</th>
+							</tr>
+						</thead>
+						<tbody id="js-tabla-general-body">
+							<tr>
+								<td class="empty-state" colspan="15">
+									<strong>Preparando la tabla general</strong>
+									La conexión con Google Sheets se ejecuta al cargar la página.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</article>
+		</section>
+	</main>
+
+	<script src="./lector_datos.js"></script>
+	<script src="./tabla.js"></script>
+</body>
+</html>

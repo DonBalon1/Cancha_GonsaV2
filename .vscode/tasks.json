@@ -1,0 +1,122 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Verificar tabla general",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_tabla.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar tabla general refinada",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_tabla.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar tabla con filtros",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_tabla.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar goleadores",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_goleadores.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar resumen",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_resumen.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar resumen pulido",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_resumen.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar resumen goles visuales",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_resumen.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar partidos",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_partidos.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar partidos refinado",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_partidos.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar jugadores",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_jugadores.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar jugadores palmares",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_jugadores.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar jugadores titulos",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_jugadores.js"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Verificar jugadores años cerrados",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				".\\verificar_jugadores.js"
+			],
+			"isBackground": false
+		}
+	]
+}

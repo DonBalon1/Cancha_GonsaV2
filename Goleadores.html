@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cancha Gonsa | Goleadores</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--green-soft: #7ce7a2;
+			--green: #35c759;
+			--yellow: #f4c430;
+			--red: #ff5d5d;
+			--blue: #53b8ff;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--max-width: 1400px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			color-scheme: dark;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 32px), var(--max-width));
+			margin: 0 auto;
+			padding: 28px 0 40px;
+		}
+
+		.hero {
+			margin-bottom: 18px;
+		}
+
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.2rem, 4vw, 3.4rem);
+			line-height: 1;
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.filters-bar {
+			display: flex;
+			align-items: end;
+			gap: 14px;
+			padding: 18px 18px 0;
+			flex-wrap: wrap;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 170px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+		}
+
+		.filters-summary {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-left: auto;
+		}
+
+		.filter-chip {
+			padding: 10px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.035);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.filter-chip strong {
+			color: var(--text);
+		}
+
+		.table-wrapper {
+			overflow-x: auto;
+			padding: 12px;
+		}
+
+		.table-scroll-hint {
+			display: none;
+			padding: 0 16px 4px;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		.table-wrapper::-webkit-scrollbar {
+			height: 10px;
+		}
+
+		.table-wrapper::-webkit-scrollbar-thumb {
+			background: rgba(121, 184, 255, 0.2);
+			border-radius: 999px;
+		}
+
+		table {
+			width: 100%;
+			min-width: 980px;
+			border-collapse: separate;
+			border-spacing: 0;
+			margin: 0;
+		}
+
+		thead th {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			padding: 16px 12px;
+			background: rgba(13, 19, 34, 0.96);
+			color: #79b8ff;
+			border-bottom: 1px solid var(--line);
+			font-size: 0.78rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			text-align: center;
+			white-space: nowrap;
+		}
+
+		thead th:first-child {
+			border-top-left-radius: var(--radius-lg);
+		}
+
+		thead th:last-child {
+			border-top-right-radius: var(--radius-lg);
+		}
+
+		tbody tr {
+			background: rgba(255, 255, 255, 0.012);
+		}
+
+		tbody tr:hover {
+			background: rgba(83, 184, 255, 0.05);
+		}
+
+		tbody td {
+			padding: 12px 14px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+			text-align: center;
+		}
+
+		.position-cell {
+			width: 92px;
+		}
+
+		.rank-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			min-width: 54px;
+			padding: 10px 14px;
+			border-radius: 14px;
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.28), rgba(83, 184, 255, 0.08));
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			font-weight: 700;
+		}
+
+		.rank-badge[data-rank="1"] {
+			background: linear-gradient(135deg, rgba(255, 220, 82, 0.36), rgba(255, 220, 82, 0.1));
+			border-color: rgba(255, 220, 82, 0.25);
+		}
+
+		.rank-badge[data-rank="2"] {
+			background: linear-gradient(135deg, rgba(144, 199, 255, 0.3), rgba(144, 199, 255, 0.08));
+			border-color: rgba(144, 199, 255, 0.22);
+		}
+
+		.rank-badge[data-rank="3"] {
+			background: linear-gradient(135deg, rgba(255, 161, 96, 0.3), rgba(255, 161, 96, 0.08));
+			border-color: rgba(255, 161, 96, 0.22);
+		}
+
+		.rank-badge__icon {
+			font-size: 1rem;
+		}
+
+		.player-cell {
+			min-width: 220px;
+			text-align: left;
+		}
+
+		.player {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.player__avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 14px;
+			object-fit: cover;
+			background: linear-gradient(135deg, #1d2949, #0f162a);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.player__name {
+			display: block;
+			font-weight: 600;
+		}
+
+		.player__meta {
+			display: block;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		.goal-cell {
+			min-width: 220px;
+		}
+
+		.goal-stat {
+			display: grid;
+			grid-template-columns: 34px 1fr;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.goal-stat__value {
+			font-size: 1.05rem;
+			font-weight: 700;
+			color: #ffd400;
+		}
+
+		.goal-track {
+			height: 18px;
+			border-radius: 999px;
+			background: rgba(9, 14, 26, 0.88);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			padding: 2px;
+			box-shadow: inset 0 0 0 1px rgba(255, 212, 0, 0.03);
+		}
+
+		.goal-fill {
+			height: 100%;
+			border-radius: 999px;
+			background: linear-gradient(90deg, #ffe96b 0%, #ffd400 55%, #ffbc00 100%);
+			box-shadow: 0 0 8px rgba(255, 212, 0, 0.18);
+		}
+
+		.metric-very-good { color: var(--green); }
+		.metric-good-soft { color: var(--green-soft); }
+		.metric-warn { color: var(--yellow); }
+		.metric-bad { color: var(--red); }
+
+		.empty-state {
+			padding: 28px 20px 34px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			display: block;
+			margin-bottom: 8px;
+			color: var(--text);
+			font-size: 1rem;
+		}
+
+		@media (max-width: 960px) {
+			.filters-summary {
+				width: 100%;
+				margin-left: 0;
+			}
+		}
+
+		@media (max-width: 700px) {
+			.app-shell {
+				width: min(calc(100% - 20px), var(--max-width));
+				padding-top: 20px;
+			}
+
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				width: 100%;
+				padding: 6px;
+				margin-bottom: 16px;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.tab {
+				flex: 0 0 auto;
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+			}
+
+			.filters-bar {
+				padding: 16px 16px 0;
+				gap: 12px;
+			}
+
+			.filter-field {
+				min-width: 100%;
+			}
+
+			.filters-summary {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 8px;
+			}
+
+			.filter-chip {
+				padding: 10px 12px;
+				font-size: 0.82rem;
+				border-radius: 14px;
+			}
+
+			.table-scroll-hint {
+				display: block;
+			}
+
+			.table-wrapper {
+				padding: 10px 12px 12px;
+			}
+
+			table {
+				min-width: 860px;
+			}
+
+			thead th,
+			tbody td {
+				padding: 11px 10px;
+				font-size: 0.86rem;
+			}
+
+			.position-cell {
+				width: 76px;
+			}
+
+			.rank-badge {
+				min-width: 46px;
+				padding: 8px 10px;
+				border-radius: 12px;
+				font-size: 0.9rem;
+			}
+
+			.player-cell {
+				min-width: 190px;
+			}
+
+			.player__avatar {
+				width: 36px;
+				height: 36px;
+				border-radius: 12px;
+			}
+
+			.player__name {
+				font-size: 0.94rem;
+			}
+
+			.player__meta {
+				font-size: 0.76rem;
+			}
+
+			.goal-cell {
+				min-width: 180px;
+			}
+
+			.goal-stat {
+				grid-template-columns: 30px 1fr;
+				gap: 8px;
+			}
+
+			.goal-track {
+				height: 16px;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.filters-summary {
+				grid-template-columns: 1fr;
+			}
+
+			.hero h1 {
+				font-size: clamp(2rem, 10vw, 2.6rem);
+			}
+
+			.table-scroll-hint {
+				padding: 0 14px 4px;
+				font-size: 0.78rem;
+			}
+
+			table {
+				min-width: 780px;
+			}
+
+			thead th,
+			tbody td {
+				padding: 10px 9px;
+			}
+
+			.player__meta {
+				display: none;
+			}
+
+			.goal-stat__value {
+				font-size: 0.96rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="true">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<article class="panel">
+			<div class="filters-bar" aria-label="Filtros de goleadores">
+				<div class="filter-field">
+					<label for="js-filter-year">Año</label>
+					<select class="filter-select" id="js-filter-year" name="yearFilter"></select>
+				</div>
+
+				<div class="filter-field">
+					<label for="js-filter-min-matches">Mín. PJ</label>
+					<select class="filter-select" id="js-filter-min-matches" name="minMatchesFilter">
+						<option value="0">0+</option>
+						<option value="3" selected>3+</option>
+						<option value="5">5+</option>
+						<option value="10">10+</option>
+					</select>
+				</div>
+
+				<div class="filters-summary" aria-live="polite">
+					<span class="filter-chip">Año: <strong id="js-active-year">--</strong></span>
+					<span class="filter-chip">Mín. PJ: <strong id="js-active-min-matches">3+</strong></span>
+				</div>
+			</div>
+
+			<div class="table-scroll-hint">Deslizá horizontalmente para ver toda la tabla.</div>
+
+			<div class="table-wrapper">
+				<table>
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Jugador</th>
+							<th scope="col">Goles</th>
+							<th scope="col">Veces goleador</th>
+							<th scope="col">GxP</th>
+							<th scope="col">Dif. Gol</th>
+							<th scope="col">Efect. Gol</th>
+						</tr>
+					</thead>
+					<tbody id="js-goleadores-body">
+						<tr>
+							<td class="empty-state" colspan="7">
+								<strong>Preparando tabla de goleadores</strong>
+								La conexión con Google Sheets se ejecuta al cargar la página.
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</article>
+	</main>
+
+	<script src="./lector_datos.js"></script>
+	<script src="./Goleadores.js"></script>
+</body>
+</html>

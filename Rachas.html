@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cancha Gonsa | Rachas</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--blue: #53b8ff;
+			--green: #35c759;
+			--gold: #f6c768;
+			--red: #ff5d5d;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--max-width: 1400px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			color-scheme: dark;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 32px), var(--max-width));
+			margin: 0 auto;
+			padding: 28px 0 40px;
+		}
+
+		.hero {
+			margin-bottom: 18px;
+		}
+
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.2rem, 4vw, 3.4rem);
+			line-height: 1;
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin: 18px 0 20px;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+			flex-wrap: wrap;
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.panel-soft {
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.022));
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			border-radius: var(--radius-lg);
+		}
+
+		.streaks-shell {
+			display: grid;
+			gap: 18px;
+		}
+
+		.streak-section {
+			--section-accent: var(--blue);
+			--section-accent-rgb: 83, 184, 255;
+			padding: 20px;
+			position: relative;
+			overflow: hidden;
+			background: linear-gradient(180deg, rgba(11, 17, 31, 0.96), rgba(14, 21, 38, 0.94));
+			transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.streak-section:hover {
+			transform: translateY(-2px);
+			border-color: rgba(var(--section-accent-rgb), 0.18);
+			box-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+		}
+
+		.streak-section::before {
+			content: "";
+			position: absolute;
+			inset: 0 0 auto;
+			height: 3px;
+			background: linear-gradient(90deg, rgba(var(--section-accent-rgb), 0.95), rgba(var(--section-accent-rgb), 0.18));
+		}
+
+		.streak-section--victorias {
+			--section-accent: var(--green);
+			--section-accent-rgb: 53, 199, 89;
+		}
+
+		.streak-section--invicto {
+			--section-accent: var(--blue);
+			--section-accent-rgb: 83, 184, 255;
+		}
+
+		.streak-section--conGol {
+			--section-accent: var(--gold);
+			--section-accent-rgb: 246, 199, 104;
+		}
+
+		.streak-section--derrotas {
+			--section-accent: var(--red);
+			--section-accent-rgb: 255, 93, 93;
+		}
+
+		.streak-section__head {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 16px;
+			align-items: center;
+			padding-bottom: 14px;
+			margin-bottom: 18px;
+			border-bottom: 1px solid rgba(var(--section-accent-rgb), 0.16);
+		}
+
+		.streak-section__head h2 {
+			margin: 0 0 6px;
+			font-size: clamp(2.2rem, 4.4vw, 3.2rem);
+			font-weight: 900;
+			letter-spacing: -0.05em;
+			line-height: 0.92;
+			color: var(--section-accent);
+			text-shadow: 0 0 28px rgba(var(--section-accent-rgb), 0.18);
+		}
+
+		.streak-section__head p {
+			margin: 0;
+			max-width: 780px;
+			color: var(--muted);
+			font-size: 0.96rem;
+			line-height: 1.55;
+		}
+
+		.streak-section__icon {
+			width: 52px;
+			height: 52px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 16px;
+			background: rgba(var(--section-accent-rgb), 0.12);
+			border: 1px solid rgba(var(--section-accent-rgb), 0.2);
+			font-size: 1.4rem;
+		}
+
+		.streak-section__hero {
+			display: grid;
+			grid-template-columns: minmax(280px, 0.36fr) minmax(0, 1fr);
+			gap: 16px;
+			margin-bottom: 16px;
+		}
+
+		.streak-value,
+		.streak-owners,
+		.hunters-card {
+			padding: 16px;
+		}
+
+		.streak-value {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			gap: 18px;
+			background: linear-gradient(180deg, rgba(8, 14, 28, 0.88), rgba(11, 18, 31, 0.72));
+			border-color: rgba(var(--section-accent-rgb), 0.18);
+		}
+
+		.streak-value__label {
+			display: inline-flex;
+			font-size: 0.76rem;
+			font-weight: 800;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: var(--section-accent);
+		}
+
+		.streak-value__main {
+			display: flex;
+			align-items: baseline;
+			gap: 10px;
+		}
+
+		.streak-value__main strong {
+			font-size: clamp(3rem, 6vw, 4rem);
+			line-height: 0.9;
+			letter-spacing: -0.06em;
+		}
+
+		.streak-value__main span {
+			color: rgba(255, 255, 255, 0.76);
+			font-size: 1rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		.streak-owners__head,
+		.hunters-card__head {
+			display: flex;
+			justify-content: space-between;
+			align-items: start;
+			gap: 12px;
+			padding-bottom: 12px;
+			margin-bottom: 12px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		}
+
+		.streak-owners__head p,
+		.hunters-card__head h3 {
+			margin: 0;
+			font-size: 0.8rem;
+			font-weight: 800;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: rgba(255, 255, 255, 0.76);
+		}
+
+		.streak-owners__head span {
+			display: inline-flex;
+			align-items: center;
+			padding: 6px 10px;
+			border-radius: 999px;
+			background: rgba(var(--section-accent-rgb), 0.1);
+			border: 1px solid rgba(var(--section-accent-rgb), 0.18);
+			color: var(--section-accent);
+			font-size: 0.76rem;
+			font-weight: 700;
+		}
+
+		.streak-owners__list,
+		.hunters-card__list {
+			display: grid;
+			gap: 10px;
+		}
+
+		.owner-row,
+		.hunter-row {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 12px;
+			align-items: start;
+			padding: 12px 14px;
+			border-radius: 14px;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.028));
+			border: 1px solid rgba(255, 255, 255, 0.06);
+		}
+
+		.owner-row__main-wrap,
+		.hunter-row__main-wrap {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			min-width: 0;
+		}
+
+		.racha-owner__avatar {
+			width: 54px;
+			height: 54px;
+			border-radius: 16px;
+			object-fit: cover;
+			flex: 0 0 54px;
+			background: linear-gradient(135deg, #1d2949, #0f162a);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.owner-row__main,
+		.hunter-row__main {
+			min-width: 0;
+		}
+
+		.owner-row__name,
+		.hunter-row__name {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 1rem;
+			font-weight: 800;
+		}
+
+		.owner-row__name a:hover,
+		.hunter-row__name a:hover {
+			color: var(--section-accent);
+		}
+
+		.owner-row__state {
+			display: inline-flex;
+			width: fit-content;
+			margin-top: 4px;
+			padding: 4px 8px;
+			border-radius: 999px;
+			background: rgba(var(--section-accent-rgb), 0.1);
+			border: 1px solid rgba(var(--section-accent-rgb), 0.18);
+			color: var(--section-accent);
+			font-size: 0.72rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+		}
+
+		.owner-row__detail,
+		.owner-row__extra,
+		.hunter-row__detail,
+		.hunter-row__extra {
+			display: block;
+			margin-top: 3px;
+			color: var(--muted);
+			font-size: 0.84rem;
+			line-height: 1.42;
+		}
+
+		.owner-row__actions,
+		.hunter-row__actions {
+			display: inline-flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: 8px;
+			padding-top: 2px;
+		}
+
+		.hunter-row__metric {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 40px;
+			padding: 7px 10px;
+			border-radius: 999px;
+			background: rgba(var(--section-accent-rgb), 0.12);
+			border: 1px solid rgba(var(--section-accent-rgb), 0.18);
+			color: var(--section-accent);
+			font-weight: 800;
+		}
+
+		.link-pill {
+			display: inline-flex;
+			align-items: center;
+			padding: 7px 11px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.04);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			color: rgba(255, 255, 255, 0.72);
+			font-size: 0.82rem;
+			font-weight: 700;
+			transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+		}
+
+		.link-pill:hover {
+			background: rgba(var(--section-accent-rgb), 0.12);
+			border-color: rgba(var(--section-accent-rgb), 0.2);
+			color: var(--section-accent);
+			transform: translateY(-1px);
+		}
+
+		.hunters-card__head {
+			align-items: end;
+		}
+
+		.hunters-card__head p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.9rem;
+			line-height: 1.45;
+			max-width: 720px;
+		}
+
+		.hunter-row__metric::after {
+			content: " PJ";
+			font-size: 0.68rem;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			opacity: 0.72;
+			margin-left: 4px;
+		}
+
+		.hunters-empty {
+			padding: 16px;
+			border-radius: 14px;
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+		}
+
+		.hunters-empty strong {
+			display: block;
+			margin-bottom: 6px;
+			color: var(--text);
+		}
+
+		.empty-state {
+			padding: 48px 24px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			display: block;
+			margin-bottom: 8px;
+			font-size: 1.05rem;
+			color: var(--text);
+		}
+
+		@media (max-width: 960px) {
+			.streaks-shell {
+				gap: 16px;
+			}
+
+			.streak-section__hero {
+				grid-template-columns: 1fr;
+				gap: 14px;
+			}
+
+			.streak-section__head,
+			.streak-owners__head,
+			.hunters-card__head {
+				grid-template-columns: 1fr;
+				flex-direction: column;
+				align-items: start;
+			}
+
+			.streak-section__head {
+				gap: 12px;
+				margin-bottom: 16px;
+			}
+
+			.streak-section__head h2 {
+				font-size: clamp(2rem, 7vw, 2.7rem);
+			}
+		}
+
+		@media (max-width: 640px) {
+			.app-shell {
+				width: min(calc(100% - 20px), var(--max-width));
+				padding-top: 20px;
+			}
+
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				padding: 6px;
+				margin-bottom: 16px;
+				width: 100%;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.tab {
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+				flex: 0 0 auto;
+			}
+
+			.streaks-shell {
+				gap: 14px;
+			}
+
+			.streak-section {
+				padding: 16px;
+			}
+
+			.streak-section__head {
+				padding-bottom: 12px;
+				margin-bottom: 14px;
+			}
+
+			.streak-section__head h2 {
+				font-size: clamp(1.9rem, 10vw, 2.4rem);
+				line-height: 0.96;
+			}
+
+			.streak-section__head p {
+				font-size: 0.9rem;
+				line-height: 1.46;
+			}
+
+			.streak-section__icon {
+				width: 46px;
+				height: 46px;
+				border-radius: 14px;
+				font-size: 1.2rem;
+			}
+
+			.streak-value,
+			.streak-owners,
+			.hunters-card {
+				padding: 14px;
+			}
+
+			.streak-value {
+				gap: 12px;
+			}
+
+			.streak-value__label {
+				font-size: 0.72rem;
+			}
+
+			.streak-value__main {
+				flex-wrap: wrap;
+				gap: 6px 10px;
+			}
+
+			.streak-value__main strong {
+				font-size: clamp(2.3rem, 13vw, 3rem);
+			}
+
+			.streak-value__main span {
+				font-size: 0.88rem;
+			}
+
+			.streak-owners__head p,
+			.hunters-card__head h3 {
+				font-size: 0.76rem;
+			}
+
+			.streak-owners__head span {
+				font-size: 0.72rem;
+				padding: 5px 9px;
+			}
+
+			.owner-row,
+			.hunter-row {
+				grid-template-columns: 1fr;
+				gap: 10px;
+				padding: 12px;
+			}
+
+			.owner-row__main-wrap,
+			.hunter-row__main-wrap {
+				gap: 10px;
+			}
+
+			.racha-owner__avatar {
+				width: 44px;
+				height: 44px;
+				border-radius: 13px;
+				flex-basis: 44px;
+			}
+
+			.owner-row__name,
+			.hunter-row__name {
+				font-size: 0.94rem;
+			}
+
+			.owner-row__state {
+				font-size: 0.68rem;
+			}
+
+			.owner-row__detail,
+			.owner-row__extra,
+			.hunter-row__detail,
+			.hunter-row__extra,
+			.hunters-card__head p {
+				font-size: 0.8rem;
+				line-height: 1.35;
+			}
+
+			.hunter-row__metric {
+				width: fit-content;
+				min-width: 0;
+				padding: 6px 9px;
+				font-size: 0.82rem;
+			}
+
+			.link-pill {
+				padding: 6px 10px;
+				font-size: 0.78rem;
+			}
+
+			.owner-row__actions,
+			.hunter-row__actions {
+				justify-content: flex-start;
+			}
+
+			.hunters-empty {
+				padding: 14px;
+			}
+		}
+
+		@media (max-width: 520px) {
+			.hero h1 {
+				font-size: clamp(2rem, 10vw, 2.6rem);
+			}
+
+			.streak-section {
+				padding: 14px;
+			}
+
+			.streak-section__head h2 {
+				font-size: clamp(1.75rem, 10vw, 2.15rem);
+			}
+
+			.streak-section__head p {
+				font-size: 0.86rem;
+			}
+
+			.streak-value,
+			.streak-owners,
+			.hunters-card {
+				padding: 12px;
+			}
+
+			.streak-value__main strong {
+				font-size: clamp(2.1rem, 13vw, 2.7rem);
+			}
+
+			.link-pill {
+				width: 100%;
+				justify-content: center;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="true">Rachas</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<div class="streaks-shell" id="js-streaks-shell">
+			<div class="panel empty-state">
+				<strong>Conectando</strong>
+				<span>Buscando las rachas más pesadas y los perseguidores activos...</span>
+			</div>
+		</div>
+	</main>
+
+	<script src="./lector_datos.js"></script>
+	<script src="./Rachas.js"></script>
+</body>
+</html>

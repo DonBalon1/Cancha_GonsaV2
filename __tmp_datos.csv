@@ -1,0 +1,409 @@
+﻿partido_id,Fecha,Equipo,Jugador,Resultado,Goles,Autogoles,Puntos
+1,15/3/2025,1,Don BalÃ³n,Ganador,5,0,3
+1,15/3/2025,1,Galva,Ganador,2,0,3
+1,15/3/2025,1,Ciavi Jr.,Ganador,0,0,3
+1,15/3/2025,1,El Pisto,Ganador,1,0,3
+1,15/3/2025,1,Tomi U.,Ganador,0,0,3
+1,15/3/2025,1,Pepe,Ganador,0,0,3
+1,15/3/2025,2,Ibo,Perdedor,0,0,0
+1,15/3/2025,2,Fedegol,Perdedor,1,0,0
+1,15/3/2025,2,El Gordo,Perdedor,1,0,0
+1,15/3/2025,2,Cede,Perdedor,0,0,0
+1,15/3/2025,2,Juani,Perdedor,1,0,0
+1,15/3/2025,2,Lean Botto,Perdedor,3,0,0
+2,22/3/2025,1,Lean Botto,Perdedor,1,0,0
+2,22/3/2025,1,Don BalÃ³n,Perdedor,2,0,0
+2,22/3/2025,1,Pascu,Perdedor,1,0,0
+2,22/3/2025,1,Juani,Perdedor,0,0,0
+2,22/3/2025,1,Rodri,Perdedor,0,0,0
+2,22/3/2025,1,Ibo,Perdedor,0,0,0
+2,22/3/2025,2,Alva,Ganador,5,0,3
+2,22/3/2025,2,Galva,Ganador,3,0,3
+2,22/3/2025,2,Fedegol,Ganador,0,0,3
+2,22/3/2025,2,El Pisto,Ganador,0,0,3
+2,22/3/2025,2,Fabri,Ganador,3,0,3
+2,22/3/2025,2,Nico,Ganador,0,0,3
+3,29/3/2025,1,Don BalÃ³n,Ganador,4,0,3
+3,29/3/2025,1,Galva,Ganador,1,0,3
+3,29/3/2025,1,El Gordo,Ganador,3,0,3
+3,29/3/2025,1,Juance,Ganador,2,0,3
+3,29/3/2025,1,Ibo,Ganador,1,0,3
+3,29/3/2025,1,Pablo,Ganador,0,0,3
+3,29/3/2025,2,Pepe,Perdedor,1,0,0
+3,29/3/2025,2,Fedegol,Perdedor,2,0,0
+3,29/3/2025,2,Cede,Perdedor,2,0,0
+3,29/3/2025,2,Ciavi Jr.,Perdedor,1,0,0
+3,29/3/2025,2,Ciavi Sr.,Perdedor,0,0,0
+3,29/3/2025,2,El MÃ¡quina,Perdedor,1,0,0
+4,12/4/2025,1,Pepe,Ganador,2,0,3
+4,12/4/2025,1,El Pisto,Ganador,3,0,3
+4,12/4/2025,1,Galva,Ganador,1,0,3
+4,12/4/2025,1,Don BalÃ³n,Ganador,6,0,3
+4,12/4/2025,1,G. Otaku,Ganador,0,0,3
+4,12/4/2025,1,Fede R.,Ganador,0,0,3
+4,12/4/2025,2,Fedegol,Perdedor,1,0,0
+4,12/4/2025,2,Fabri,Perdedor,2,0,0
+4,12/4/2025,2,Lean M.,Perdedor,1,0,0
+4,12/4/2025,2,Huracan,Perdedor,1,0,0
+4,12/4/2025,2,Supino,Perdedor,1,0,0
+4,12/4/2025,2,Lautaro,Perdedor,1,0,0
+5,26/4/2025,1,Fedegol,Ganador,2,0,3
+5,26/4/2025,1,Lautaro,Ganador,1,0,3
+5,26/4/2025,1,Tomi U.,Ganador,1,0,3
+5,26/4/2025,1,Huracan,Ganador,1,0,3
+5,26/4/2025,1,El MÃ¡quina,Ganador,0,0,3
+5,26/4/2025,1,Don BalÃ³n,Ganador,1,0,3
+5,26/4/2025,2,Pepe,Perdedor,1,0,0
+5,26/4/2025,2,Galva,Perdedor,1,0,0
+5,26/4/2025,2,Ibo,Perdedor,0,0,0
+5,26/4/2025,2,Payas,Perdedor,1,0,0
+5,26/4/2025,2,Fabri,Perdedor,2,0,0
+5,26/4/2025,2,El Pisto,Perdedor,0,0,0
+6,3/5/2025,1,Don BalÃ³n,Ganador,3,0,3
+6,3/5/2025,1,Justo,Ganador,0,0,3
+6,3/5/2025,1,Germaneitor,Ganador,3,0,3
+6,3/5/2025,1,Galva,Ganador,0,0,3
+6,3/5/2025,1,G. Otaku,Ganador,0,0,3
+6,3/5/2025,1,Juanchi,Ganador,0,0,3
+6,3/5/2025,2,Pepe,Perdedor,0,0,0
+6,3/5/2025,2,Joya,Perdedor,1,0,0
+6,3/5/2025,2,Dagod,Perdedor,0,0,0
+6,3/5/2025,2,Rebe,Perdedor,1,0,0
+6,3/5/2025,2,Fedegol,Perdedor,1,0,0
+6,3/5/2025,2,Cede,Perdedor,2,0,0
+7,10/5/2025,1,Galva,Perdedor,0,0,0
+7,10/5/2025,1,Germaneitor,Perdedor,1,0,0
+7,10/5/2025,1,Justo,Perdedor,1,0,0
+7,10/5/2025,1,Ibo,Perdedor,1,0,0
+7,10/5/2025,1,G. Otaku,Perdedor,0,0,0
+7,10/5/2025,1,Carlo,Perdedor,0,0,0
+7,10/5/2025,2,Don BalÃ³n,Ganador,3,0,3
+7,10/5/2025,2,Alva,Ganador,3,0,3
+7,10/5/2025,2,Lean Botto,Ganador,0,0,3
+7,10/5/2025,2,Abo,Ganador,1,0,3
+7,10/5/2025,2,Lucio,Ganador,0,0,3
+7,10/5/2025,2,Huracan,Ganador,0,0,3
+8,24/5/2025,1,Don BalÃ³n,Ganador,2,0,3
+8,24/5/2025,1,El Puja,Ganador,0,0,3
+8,24/5/2025,1,El Pisto,Ganador,1,0,3
+8,24/5/2025,1,Huracan,Ganador,2,0,3
+8,24/5/2025,1,Pepe,Ganador,0,0,3
+8,24/5/2025,1,Justo,Ganador,0,0,3
+8,24/5/2025,2,Fedegol,Perdedor,1,0,0
+8,24/5/2025,2,Galva,Perdedor,0,0,0
+8,24/5/2025,2,Ibo,Perdedor,0,0,0
+8,24/5/2025,2,El MÃ¡quina,Perdedor,1,0,0
+8,24/5/2025,2,Cede,Perdedor,1,0,0
+8,24/5/2025,2,El Gordo,Perdedor,0,0,0
+9,31/5/2025,1,Fedegol,Ganador,2,0,3
+9,31/5/2025,1,Germaneitor,Ganador,1,0,3
+9,31/5/2025,1,Payas,Ganador,1,0,3
+9,31/5/2025,1,Justo,Ganador,0,0,3
+9,31/5/2025,1,Huracan,Ganador,2,0,3
+9,31/5/2025,1,El Gordo,Ganador,0,0,3
+9,31/5/2025,2,Don BalÃ³n,Perdedor,3,0,0
+9,31/5/2025,2,Galva,Perdedor,1,0,0
+9,31/5/2025,2,Lean M.,Perdedor,1,0,0
+9,31/5/2025,2,Pepe,Perdedor,0,0,0
+9,31/5/2025,2,Ibo,Perdedor,0,0,0
+9,31/5/2025,2,Brian,Perdedor,0,0,0
+10,14/6/2025,1,Galva,Perdedor,0,0,0
+10,14/6/2025,1,Roman,Perdedor,0,0,0
+10,14/6/2025,1,Claudio,Perdedor,0,0,0
+10,14/6/2025,1,Pepe,Perdedor,0,0,0
+10,14/6/2025,1,Cede,Perdedor,0,0,0
+10,14/6/2025,1,Huracan,Perdedor,5,0,0
+10,14/6/2025,2,Fedegol,Ganador,2,0,3
+10,14/6/2025,2,El Gordo,Ganador,1,0,3
+10,14/6/2025,2,Ova,Ganador,1,0,3
+10,14/6/2025,2,Lean M.,Ganador,1,0,3
+10,14/6/2025,2,Supino,Ganador,0,0,3
+10,14/6/2025,2,El MÃ¡quina,Ganador,1,0,3
+11,28/6/2025,1,Don BalÃ³n,Perdedor,1,0,0
+11,28/6/2025,1,El Gordo,Perdedor,1,0,0
+11,28/6/2025,1,Poki,Perdedor,3,0,0
+11,28/6/2025,1,Cede,Perdedor,1,0,0
+11,28/6/2025,1,Ibo,Perdedor,0,0,0
+11,28/6/2025,1,Galva,Perdedor,0,0,0
+11,28/6/2025,2,Fedegol,Ganador,1,0,3
+11,28/6/2025,2,Germaneitor,Ganador,0,0,3
+11,28/6/2025,2,Justo,Ganador,3,0,3
+11,28/6/2025,2,Lean M.,Ganador,1,0,3
+11,28/6/2025,2,Fabri,Ganador,2,0,3
+11,28/6/2025,2,Luigi,Ganador,0,0,3
+12,5/7/2025,1,Ciavi Sr.,Ganador,2,0,3
+12,5/7/2025,1,Ibo,Ganador,0,0,3
+12,5/7/2025,1,Fedegol,Ganador,1,0,3
+12,5/7/2025,1,Justo,Ganador,0,0,3
+12,5/7/2025,1,Don BalÃ³n,Ganador,3,0,3
+12,5/7/2025,1,Pepe,Ganador,0,0,3
+12,5/7/2025,2,Poki,Perdedor,1,0,0
+12,5/7/2025,2,El Gordo,Perdedor,2,0,0
+12,5/7/2025,2,Cede,Perdedor,0,0,0
+12,5/7/2025,2,Alva,Perdedor,0,0,0
+12,5/7/2025,2,Luigi,Perdedor,0,0,0
+12,5/7/2025,2,Galva,Perdedor,1,0,0
+13,12/7/2025,1,Ova,Ganador,0,0,3
+13,12/7/2025,1,Lean M.,Ganador,1,0,3
+13,12/7/2025,1,Fedegol,Ganador,3,0,3
+13,12/7/2025,1,Germaneitor,Ganador,1,0,3
+13,12/7/2025,1,El Pisto,Ganador,1,0,3
+13,12/7/2025,1,Cede,Ganador,1,0,3
+13,12/7/2025,2,Don BalÃ³n,Perdedor,4,0,0
+13,12/7/2025,2,Lean Botto,Perdedor,0,0,0
+13,12/7/2025,2,Galva,Perdedor,2,0,0
+13,12/7/2025,2,Brian,Perdedor,0,0,0
+13,12/7/2025,2,Ibo,Perdedor,0,0,0
+13,12/7/2025,2,Supino,Perdedor,0,0,0
+14,19/7/2025,1,Rulo,Perdedor,0,0,0
+14,19/7/2025,1,Galva,Perdedor,1,0,0
+14,19/7/2025,1,Alva,Perdedor,2,0,0
+14,19/7/2025,1,Tomi U.,Perdedor,0,0,0
+14,19/7/2025,1,Fedegol,Perdedor,2,0,0
+14,19/7/2025,1,El Gordo,Perdedor,0,0,0
+14,19/7/2025,2,Pepe,Ganador,1,0,3
+14,19/7/2025,2,Lean M.,Ganador,2,0,3
+14,19/7/2025,2,Ibo,Ganador,0,0,3
+14,19/7/2025,2,Don BalÃ³n,Ganador,2,0,3
+14,19/7/2025,2,Justo,Ganador,1,0,3
+14,19/7/2025,2,Cede,Ganador,0,0,3
+15,9/8/2025,1,Tole,Perdedor,0,0,0
+15,9/8/2025,1,Lean M.,Perdedor,2,0,0
+15,9/8/2025,1,Rulo,Perdedor,0,0,0
+15,9/8/2025,1,Justo,Perdedor,2,0,0
+15,9/8/2025,1,Fedegol,Perdedor,1,0,0
+15,9/8/2025,1,El MÃ¡quina,Perdedor,0,1,0
+15,9/8/2025,2,Pepe,Ganador,1,0,3
+15,9/8/2025,2,Ibo,Ganador,0,0,3
+15,9/8/2025,2,Galva,Ganador,1,0,3
+15,9/8/2025,2,Don BalÃ³n,Ganador,3,0,3
+15,9/8/2025,2,El Gordo,Ganador,1,0,3
+15,9/8/2025,2,Luigi,Ganador,1,0,3
+16,16/8/2025,1,Galva,Perdedor,1,0,0
+16,16/8/2025,1,Justo,Perdedor,0,0,0
+16,16/8/2025,1,Ibo,Perdedor,1,0,0
+16,16/8/2025,1,El Pisto,Perdedor,1,0,0
+16,16/8/2025,1,Pepe,Perdedor,0,0,0
+16,16/8/2025,1,Huracan,Perdedor,1,0,0
+16,16/8/2025,2,Don BalÃ³n,Ganador,2,0,3
+16,16/8/2025,2,Tomi U.,Ganador,0,0,3
+16,16/8/2025,2,Cede,Ganador,4,0,3
+16,16/8/2025,2,El MÃ¡quina,Ganador,0,0,3
+16,16/8/2025,2,Alva,Ganador,0,0,3
+16,16/8/2025,2,Luigi,Ganador,0,0,3
+17,23/8/2025,1,Don BalÃ³n,Perdedor,1,0,0
+17,23/8/2025,1,Tomi U.,Perdedor,0,0,0
+17,23/8/2025,1,Lean Botto,Perdedor,0,0,0
+17,23/8/2025,1,Juani,Perdedor,1,0,0
+17,23/8/2025,1,Huracan,Perdedor,0,0,0
+17,23/8/2025,1,Ibo,Perdedor,1,0,0
+17,23/8/2025,2,Fedegol,Ganador,3,0,3
+17,23/8/2025,2,El MÃ¡quina,Ganador,0,0,3
+17,23/8/2025,2,Rodri,Ganador,0,0,3
+17,23/8/2025,2,Pepe,Ganador,2,0,3
+17,23/8/2025,2,Germaneitor,Ganador,2,0,3
+17,23/8/2025,2,Cede,Ganador,2,0,3
+18,30/8/2025,1,Alva,Perdedor,0,0,0
+18,30/8/2025,1,El Gordo,Perdedor,1,0,0
+18,30/8/2025,1,Germaneitor,Perdedor,0,0,0
+18,30/8/2025,1,Ibo,Perdedor,0,0,0
+18,30/8/2025,1,Rodri,Perdedor,1,0,0
+18,30/8/2025,1,Galva,Perdedor,3,0,0
+18,30/8/2025,2,Don BalÃ³n,Ganador,2,0,3
+18,30/8/2025,2,Cede,Ganador,1,0,3
+18,30/8/2025,2,Tomi U.,Ganador,0,0,3
+18,30/8/2025,2,Fedegol,Ganador,3,0,3
+18,30/8/2025,2,Justo,Ganador,1,0,3
+18,30/8/2025,2,Luigi,Ganador,0,0,3
+19,6/9/2025,1,Don BalÃ³n,Empate,2,0,1
+19,6/9/2025,1,Justo,Empate,0,1,1
+19,6/9/2025,1,Cede,Empate,0,0,1
+19,6/9/2025,1,Pepe,Empate,0,0,1
+19,6/9/2025,1,El Gordo,Empate,0,0,1
+19,6/9/2025,1,El MÃ¡quina,Empate,0,0,1
+19,6/9/2025,2,Fedegol,Empate,0,0,1
+19,6/9/2025,2,Galva,Empate,0,0,1
+19,6/9/2025,2,Ibo,Empate,0,0,1
+19,6/9/2025,2,Huracan,Empate,0,0,1
+19,6/9/2025,2,Germaneitor,Empate,1,0,1
+19,6/9/2025,2,Rodri,Empate,0,0,1
+20,13/9/2025,1,Don BalÃ³n,Perdedor,2,0,0
+20,13/9/2025,1,Galva,Perdedor,1,0,0
+20,13/9/2025,1,Cede,Perdedor,0,0,0
+20,13/9/2025,1,Luigi,Perdedor,0,0,0
+20,13/9/2025,1,Pepe,Perdedor,0,0,0
+20,13/9/2025,1,Rulo,Perdedor,0,0,0
+20,13/9/2025,2,Fedegol,Ganador,0,0,3
+20,13/9/2025,2,Lean M.,Ganador,1,0,3
+20,13/9/2025,2,Justo,Ganador,2,0,3
+20,13/9/2025,2,Ibo,Ganador,2,0,3
+20,13/9/2025,2,Supino,Ganador,2,0,3
+20,13/9/2025,2,Rodri,Ganador,0,0,3
+21,20/9/2025,1,Don BalÃ³n,Ganador,4,0,3
+21,20/9/2025,1,Dagos,Ganador,0,0,3
+21,20/9/2025,1,Luigi,Ganador,0,0,3
+21,20/9/2025,1,Justo,Ganador,2,0,3
+21,20/9/2025,1,Gian,Ganador,0,0,3
+21,20/9/2025,1,Galva,Ganador,2,0,3
+21,20/9/2025,2,Fedegol,Perdedor,4,0,0
+21,20/9/2025,2,El Gordo,Perdedor,0,0,0
+21,20/9/2025,2,Germaneitor,Perdedor,1,0,0
+21,20/9/2025,2,Rulo,Perdedor,0,0,0
+21,20/9/2025,2,Rodri,Perdedor,2,0,0
+21,20/9/2025,2,Toto,Perdedor,0,1,0
+22,27/9/2025,1,Fedegol,Ganador,0,0,3
+22,27/9/2025,1,Lean M.,Ganador,3,0,3
+22,27/9/2025,1,El Gordo,Ganador,0,0,3
+22,27/9/2025,1,Galva,Ganador,3,0,3
+22,27/9/2025,1,Justo,Ganador,1,0,3
+22,27/9/2025,1,Luigi,Ganador,0,0,3
+22,27/9/2025,2,Don BalÃ³n,Perdedor,1,0,0
+22,27/9/2025,2,Alva,Perdedor,1,0,0
+22,27/9/2025,2,Ibo,Perdedor,0,0,0
+22,27/9/2025,2,Dagos,Perdedor,0,0,0
+22,27/9/2025,2,Pepe,Perdedor,0,0,0
+22,27/9/2025,2,Tomi U.,Perdedor,1,0,0
+23,4/10/2025,1,Gian,Ganador,2,0,3
+23,4/10/2025,1,Juani,Ganador,4,0,3
+23,4/10/2025,1,Luigi,Ganador,0,0,3
+23,4/10/2025,1,Justo,Ganador,1,0,3
+23,4/10/2025,1,Marto,Ganador,0,0,3
+23,4/10/2025,1,Don BalÃ³n,Ganador,4,0,3
+23,4/10/2025,2,Germaneitor,Perdedor,1,0,0
+23,4/10/2025,2,Dagos,Perdedor,2,0,0
+23,4/10/2025,2,El Gordo,Perdedor,1,0,0
+23,4/10/2025,2,Rulo,Perdedor,0,0,0
+23,4/10/2025,2,Fedegol,Perdedor,3,0,0
+23,4/10/2025,2,Rodri,Perdedor,1,0,0
+24,11/10/2025,1,Rulo,Ganador,0,0,3
+24,11/10/2025,1,Rodri,Ganador,2,0,3
+24,11/10/2025,1,Martin,Ganador,1,0,3
+24,11/10/2025,1,Justo,Ganador,1,0,3
+24,11/10/2025,1,Fedegol,Ganador,5,0,3
+24,11/10/2025,1,Gian,Ganador,3,0,3
+24,11/10/2025,2,Germaneitor,Perdedor,3,0,0
+24,11/10/2025,2,El Gordo,Perdedor,0,0,0
+24,11/10/2025,2,Galva,Perdedor,1,0,0
+24,11/10/2025,2,Ibo,Perdedor,0,0,0
+24,11/10/2025,2,Juani,Perdedor,3,0,0
+24,11/10/2025,2,Luigi,Perdedor,0,0,0
+25,18/10/2025,1,Fedegol,Ganador,1,0,3
+25,18/10/2025,1,Galva,Ganador,0,0,3
+25,18/10/2025,1,Lean M.,Ganador,3,0,3
+25,18/10/2025,1,Ibo,Ganador,1,0,3
+25,18/10/2025,1,El Gordo,Ganador,1,0,3
+25,18/10/2025,1,Tomi U.,Ganador,1,0,3
+25,18/10/2025,2,Don BalÃ³n,Perdedor,3,0,0
+25,18/10/2025,2,Justo,Perdedor,0,0,0
+25,18/10/2025,2,Cede,Perdedor,0,0,0
+25,18/10/2025,2,Luigi,Perdedor,0,0,0
+25,18/10/2025,2,Pepe,Perdedor,0,0,0
+25,18/10/2025,2,Huracan,Perdedor,2,0,0
+26,1/11/2025,1,Don BalÃ³n,Empate,2,0,1
+26,1/11/2025,1,Germaneitor,Empate,1,0,1
+26,1/11/2025,1,Lean M.,Empate,1,0,1
+26,1/11/2025,1,Cede,Empate,1,0,1
+26,1/11/2025,1,Rodri,Empate,0,0,1
+26,1/11/2025,1,Ibo,Empate,0,0,1
+26,1/11/2025,2,Fedegol,Empate,1,0,1
+26,1/11/2025,2,Galva,Empate,0,0,1
+26,1/11/2025,2,Gian,Empate,1,0,1
+26,1/11/2025,2,Huracan,Empate,2,0,1
+26,1/11/2025,2,Supino,Empate,0,0,1
+26,1/11/2025,2,Alva,Empate,1,0,1
+27,8/11/2025,1,Fedegol,Empate,3,0,1
+27,8/11/2025,1,Galva,Empate,0,0,1
+27,8/11/2025,1,Huracan,Empate,0,0,1
+27,8/11/2025,1,Luigi,Empate,0,0,1
+27,8/11/2025,1,Rodri,Empate,0,0,1
+27,8/11/2025,1,Alva,Empate,0,0,1
+27,8/11/2025,2,Don BalÃ³n,Empate,1,0,1
+27,8/11/2025,2,Germaneitor,Empate,1,0,1
+27,8/11/2025,2,El Gordo,Empate,0,0,1
+27,8/11/2025,2,El MÃ¡quina,Empate,0,0,1
+27,8/11/2025,2,Pepe,Empate,1,0,1
+27,8/11/2025,2,Justo,Empate,0,0,1
+28,22/11/2025,1,Fedegol,Perdedor,3,0,0
+28,22/11/2025,1,Rodri,Perdedor,1,0,0
+28,22/11/2025,1,Fabri,Perdedor,2,0,0
+28,22/11/2025,1,Lean M.,Perdedor,1,0,0
+28,22/11/2025,1,Justo,Perdedor,0,1,0
+28,22/11/2025,1,Aguilar,Perdedor,0,0,0
+28,22/11/2025,2,Don BalÃ³n,Ganador,10,0,3
+28,22/11/2025,2,Poki,Ganador,1,0,3
+28,22/11/2025,2,Lautaro,Ganador,2,0,3
+28,22/11/2025,2,Germaneitor,Ganador,2,0,3
+28,22/11/2025,2,Ova,Ganador,0,0,3
+28,22/11/2025,2,Galva,Ganador,1,0,3
+29,29/11/2025,1,Fedegol,Empate,1,0,1
+29,29/11/2025,1,Don BalÃ³n,Empate,3,0,1
+29,29/11/2025,1,Poki,Empate,0,0,1
+29,29/11/2025,1,Pepe,Empate,1,0,1
+29,29/11/2025,1,El Gordo,Empate,0,0,1
+29,29/11/2025,1,Rulo,Empate,0,0,1
+29,29/11/2025,2,Galva,Empate,1,0,1
+29,29/11/2025,2,Joa,Empate,2,1,1
+29,29/11/2025,2,Justo,Empate,1,0,1
+29,29/11/2025,2,Alva,Empate,2,0,1
+29,29/11/2025,2,Ibo,Empate,0,0,1
+29,29/11/2025,2,Luigi,Empate,0,0,1
+30,14/3/2026,1,Don BalÃ³n,Empate,3,0,1
+30,14/3/2026,1,El Gordo,Empate,0,0,1
+30,14/3/2026,1,Juance,Empate,1,0,1
+30,14/3/2026,1,Ibo,Empate,0,0,1
+30,14/3/2026,1,Germaneitor,Empate,0,0,1
+30,14/3/2026,1,Justo,Empate,1,0,1
+30,14/3/2026,2,Joa,Empate,3,1,1
+30,14/3/2026,2,Fedegol,Empate,0,0,1
+30,14/3/2026,2,Rodri,Empate,0,0,1
+30,14/3/2026,2,Fabri,Empate,0,0,1
+30,14/3/2026,2,Galva,Empate,2,0,1
+30,14/3/2026,2,Luigi,Empate,1,0,1
+31,21/3/2026,1,Rodri,Perdedor,1,0,0
+31,21/3/2026,1,Fedegol,Perdedor,2,0,0
+31,21/3/2026,1,Germaneitor,Perdedor,1,0,0
+31,21/3/2026,1,Joaco Ger,Perdedor,0,0,0
+31,21/3/2026,1,Lean Botto,Perdedor,1,0,0
+31,21/3/2026,1,Cede,Perdedor,0,0,0
+31,21/3/2026,2,Alva,Ganador,4,0,3
+31,21/3/2026,2,Galva,Ganador,1,0,3
+31,21/3/2026,2,Don BalÃ³n,Ganador,3,0,3
+31,21/3/2026,2,Gian,Ganador,2,0,3
+31,21/3/2026,2,Justo,Ganador,1,0,3
+31,21/3/2026,2,Luigi,Ganador,0,0,3
+32,11/4/2026,1,El Gordo,Ganador,1,0,3
+32,11/4/2026,1,Don BalÃ³n,Ganador,1,0,3
+32,11/4/2026,1,Germaneitor,Ganador,0,0,3
+32,11/4/2026,1,Justo,Ganador,2,0,3
+32,11/4/2026,1,Galva,Ganador,1,0,3
+32,11/4/2026,1,Cede,Ganador,1,0,3
+32,11/4/2026,2,Fedegol,Perdedor,0,0,0
+32,11/4/2026,2,Rodri,Perdedor,0,0,0
+32,11/4/2026,2,Rulo,Perdedor,0,0,0
+32,11/4/2026,2,Joa,Perdedor,1,0,0
+32,11/4/2026,2,Juani,Perdedor,1,0,0
+32,11/4/2026,2,Ibo,Perdedor,0,0,0
+33,18/4/2026,1,Fedegol,Ganador,1,0,3
+33,18/4/2026,1,Germaneitor,Ganador,3,0,3
+33,18/4/2026,1,El Gordo,Ganador,2,0,3
+33,18/4/2026,1,Rulo,Ganador,0,0,3
+33,18/4/2026,1,Cede,Ganador,3,0,3
+33,18/4/2026,1,Joa,Ganador,3,0,3
+33,18/4/2026,2,Galva,Perdedor,2,0,0
+33,18/4/2026,2,Don BalÃ³n,Perdedor,2,0,0
+33,18/4/2026,2,Pepe,Perdedor,1,0,0
+33,18/4/2026,2,Rodri,Perdedor,0,1,0
+33,18/4/2026,2,Luigi,Perdedor,0,0,0
+33,18/4/2026,2,El MÃ¡quina,Perdedor,1,0,0
+34,25/4/2026,1,Fedegol,Ganador,2,0,3
+34,25/4/2026,1,Don BalÃ³n,Ganador,5,0,3
+34,25/4/2026,1,Pepe,Ganador,0,0,3
+34,25/4/2026,1,Fran,Ganador,1,0,3
+34,25/4/2026,1,Cede,Ganador,2,0,3
+34,25/4/2026,1,El Gordo,Ganador,1,0,3
+34,25/4/2026,2,Germaneitor,Perdedor,0,0,0
+34,25/4/2026,2,Galva,Perdedor,0,0,0
+34,25/4/2026,2,Joa,Perdedor,0,0,0
+34,25/4/2026,2,Justo,Perdedor,2,0,0
+34,25/4/2026,2,Juancito,Perdedor,0,0,0
+34,25/4/2026,2,Ibo,Perdedor,1,0,0

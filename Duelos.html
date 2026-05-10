@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cancha Gonsa | Duelos</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--green-soft: #7ce7a2;
+			--green: #35c759;
+			--yellow: #f4c430;
+			--red: #ff5d5d;
+			--blue: #53b8ff;
+			--violet: #9b7cff;
+			--gold: #f6c768;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--max-width: 1400px;
+		}
+
+		* { box-sizing: border-box; }
+		html { color-scheme: dark; }
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+		a { color: inherit; text-decoration: none; }
+
+		.app-shell {
+			width: min(calc(100% - 32px), var(--max-width));
+			margin: 0 auto;
+			padding: 28px 0 40px;
+		}
+
+		.hero { margin-bottom: 18px; }
+		.hero h1 { margin: 0; font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1; }
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.filters-bar {
+			display: flex;
+			align-items: end;
+			gap: 14px;
+			padding: 18px 18px 0;
+			flex-wrap: wrap;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 210px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select {
+			width: 100%;
+			padding: 12px 14px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.filter-select:focus {
+			border-color: rgba(83, 184, 255, 0.45);
+			box-shadow: 0 0 0 3px rgba(83, 184, 255, 0.12);
+		}
+
+		.swap-button {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 48px;
+			padding: 0 16px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			font: inherit;
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		.filters-summary {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-left: auto;
+		}
+
+		.filter-chip {
+			padding: 10px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.035);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.filter-chip strong { color: var(--text); }
+
+		.duels-shell {
+			display: grid;
+			gap: 18px;
+			padding: 18px;
+		}
+
+		.duel-hero {
+			padding: 20px;
+			display: grid;
+			gap: 18px;
+		}
+
+		.duel-hero__players {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+			gap: 16px;
+			align-items: center;
+		}
+
+		.duel-player {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			min-width: 0;
+		}
+
+		.duel-player--right {
+			justify-content: flex-end;
+			text-align: right;
+		}
+
+		.duel-player__avatar {
+			width: 84px;
+			height: 84px;
+			border-radius: 24px;
+			object-fit: cover;
+			background: linear-gradient(135deg, #1d2949, #0f162a);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			flex: 0 0 84px;
+		}
+
+		.duel-player__label {
+			display: inline-flex;
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.duel-player__label--a { color: #8edfff; }
+		.duel-player__label--b { color: #d2c1ff; }
+
+		.duel-player__name {
+			margin: 6px 0 0;
+			font-size: clamp(1.6rem, 3vw, 2.35rem);
+			line-height: 1.05;
+		}
+
+		.duel-player__name a:hover { color: var(--blue); }
+
+		.duel-hero__versus {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 72px;
+			height: 72px;
+			border-radius: 50%;
+			background: rgba(255,255,255,0.04);
+			border: 1px solid rgba(255,255,255,0.06);
+			font-weight: 800;
+			font-size: 1.25rem;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+
+		.duel-kpis {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 12px;
+		}
+
+		.summary-card {
+			display: grid;
+			gap: 8px;
+			padding: 16px;
+			border-radius: 18px;
+			background: rgba(255,255,255,0.03);
+			border: 1px solid rgba(255,255,255,0.06);
+		}
+
+		.summary-card__label {
+			font-size: 0.74rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.summary-card__value {
+			font-size: 1.6rem;
+			font-weight: 800;
+			line-height: 1;
+		}
+		.summary-card__value--green { color: #8edfff; }
+		.summary-card__value--blue { color: #63d2ff; }
+		.summary-card__value--violet { color: #bba1ff; }
+		.summary-card__value--gold { color: #ffd76b; }
+		.summary-card__value--red { color: #d2c1ff; }
+
+		.summary-card__detail {
+			font-size: 0.86rem;
+			color: var(--muted);
+			line-height: 1.35;
+		}
+
+		.summary-card__balance {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			flex-wrap: wrap;
+			font-size: 1.6rem;
+			font-weight: 900;
+			line-height: 1;
+		}
+
+		.summary-card__balance-item--win { color: #8edfff; }
+		.summary-card__balance-item--draw { color: var(--yellow); }
+		.summary-card__balance-item--loss { color: #d2c1ff; }
+		.summary-card__balance-separator { color: rgba(255,255,255,0.3); }
+
+		.duel-panels {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 18px;
+		}
+
+		.duel-section {
+			padding: 18px;
+			display: grid;
+			gap: 16px;
+		}
+
+		.duel-section--mates {
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.05), var(--shadow);
+		}
+
+		.duel-section--versus {
+			box-shadow: inset 0 0 0 1px rgba(155, 124, 255, 0.05), var(--shadow);
+		}
+
+		.duel-section__head {
+			display: flex;
+			justify-content: space-between;
+			align-items: end;
+			gap: 14px;
+			padding-bottom: 12px;
+			border-bottom: 1px solid rgba(255,255,255,0.05);
+		}
+
+		.duel-section__head h3 {
+			margin: 0 0 6px;
+			font-size: clamp(1.35rem, 2vw, 1.7rem);
+			font-weight: 900;
+			letter-spacing: -0.03em;
+		}
+
+		.duel-section--versus .duel-section__head h3 { color: #c8b7ff; }
+		.duel-section--mates .duel-section__head h3 { color: #8ed4ff; }
+
+		.duel-section__head p {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.9rem;
+			line-height: 1.45;
+		}
+
+		.duel-section__badge {
+			display: inline-flex;
+			align-items: center;
+			padding: 7px 11px;
+			border-radius: 999px;
+			background: rgba(255,255,255,0.06);
+			border: 1px solid rgba(255,255,255,0.08);
+			font-size: 0.82rem;
+			font-weight: 700;
+		}
+
+		.duel-rival-focus {
+			display: grid;
+			grid-template-columns: minmax(150px, 0.85fr) minmax(280px, 1.4fr) minmax(150px, 0.85fr);
+			gap: 14px;
+			padding: 16px;
+			border-radius: 22px;
+			background: linear-gradient(180deg, rgba(155, 124, 255, 0.08), rgba(83, 184, 255, 0.03));
+			border: 1px solid rgba(155, 124, 255, 0.12);
+		}
+
+		.duel-rival-focus__side,
+		.duel-rival-focus__center {
+			display: grid;
+			gap: 6px;
+			padding: 18px;
+			border-radius: 18px;
+			background: rgba(255,255,255,0.03);
+			border: 1px solid rgba(255,255,255,0.06);
+		}
+
+		.duel-rival-focus__center {
+			place-items: center;
+			text-align: center;
+			background: rgba(11, 16, 32, 0.34);
+		}
+
+		.duel-rival-focus__player,
+		.duel-rival-focus__eyebrow,
+		.duel-rival-focus__caption {
+			font-size: 0.76rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.duel-rival-focus__side--left { text-align: left; }
+		.duel-rival-focus__side--right { text-align: right; }
+
+		.duel-rival-focus__value {
+			font-size: clamp(2.3rem, 4.6vw, 3.2rem);
+			font-weight: 900;
+			line-height: 1;
+			letter-spacing: -0.06em;
+		}
+
+		.duel-rival-focus__value--win { color: #7fd8ff; }
+		.duel-rival-focus__value--loss { color: #c8b7ff; }
+
+		.duel-rival-focus__record {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			font-size: clamp(2.8rem, 6vw, 4.25rem);
+			font-weight: 900;
+			line-height: 0.95;
+			letter-spacing: -0.08em;
+			color: #eef3ff;
+		}
+
+		.duel-rival-focus__record-separator,
+		.duel-rival-focus__record-part--left,
+		.duel-rival-focus__record-part--draw,
+		.duel-rival-focus__record-part--right {
+			color: #eef3ff;
+		}
+
+		.duel-rival-focus__legend {
+			font-size: 0.92rem;
+			color: var(--muted);
+		}
+
+		.duel-rival-focus__meta {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			flex-wrap: wrap;
+			font-size: 0.88rem;
+			color: #9bb8d8;
+			padding-top: 4px;
+		}
+
+		.duel-rival-focus__meta-player--left { color: #8edfff; }
+		.duel-rival-focus__meta-player--right { color: #d2c1ff; }
+		.duel-rival-focus__meta-separator { color: rgba(255,255,255,0.28); }
+
+		.duel-team-focus {
+			display: flex;
+			justify-content: center;
+		}
+
+		.duel-team-focus__inner {
+			width: min(100%, 760px);
+			display: grid;
+			place-items: center;
+			gap: 10px;
+			padding: 26px 24px;
+			border-radius: 22px;
+			text-align: center;
+			background: linear-gradient(180deg, rgba(83, 184, 255, 0.08), rgba(155, 124, 255, 0.04));
+			border: 1px solid rgba(83, 184, 255, 0.12);
+		}
+
+		.duel-team-focus__eyebrow,
+		.duel-team-focus__legend {
+			font-size: 0.78rem;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.duel-team-focus__record {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			font-size: clamp(2.6rem, 5.4vw, 4rem);
+			font-weight: 900;
+			line-height: 0.95;
+			letter-spacing: -0.08em;
+		}
+
+		.duel-team-focus__record-part--win { color: var(--green-soft); }
+		.duel-team-focus__record-part--draw { color: var(--yellow); }
+		.duel-team-focus__record-part--loss { color: #ff8b8b; }
+		.duel-team-focus__record-separator { color: rgba(255,255,255,0.28); }
+
+		.duel-team-focus__meta {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			flex-wrap: wrap;
+			font-size: 0.9rem;
+			color: #9bb8d8;
+		}
+
+		.duel-team-focus__meta-player--left { color: #8edfff; }
+		.duel-team-focus__meta-player--right { color: #d2c1ff; }
+		.duel-team-focus__meta-separator { color: rgba(255,255,255,0.28); }
+
+		.duel-list {
+			display: grid;
+			gap: 10px;
+		}
+
+		.duel-accordion {
+			border-radius: 18px;
+			background: rgba(255,255,255,0.02);
+			border: 1px solid rgba(255,255,255,0.05);
+			overflow: hidden;
+		}
+
+		.duel-accordion[open] {
+			background: rgba(255,255,255,0.024);
+		}
+
+		.duel-accordion__summary {
+			list-style: none;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			padding: 16px 18px;
+			cursor: pointer;
+		}
+
+		.duel-accordion__summary::-webkit-details-marker { display: none; }
+
+		.duel-accordion__summary::after {
+			content: "+";
+			font-size: 1.25rem;
+			font-weight: 700;
+			color: #9fd6ff;
+			transition: transform 0.2s ease;
+		}
+
+		.duel-accordion[open] .duel-accordion__summary::after {
+			content: "−";
+		}
+
+		.duel-accordion__summary-main {
+			display: grid;
+			gap: 4px;
+		}
+
+		.duel-accordion__summary-main strong {
+			font-size: 0.98rem;
+		}
+
+		.duel-accordion__summary-main span {
+			font-size: 0.88rem;
+			color: var(--muted);
+		}
+
+		.duel-accordion__badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 8px 10px;
+			border-radius: 999px;
+			background: rgba(83, 184, 255, 0.1);
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			font-size: 0.8rem;
+			font-weight: 800;
+			color: #b9dfff;
+			flex: 0 0 auto;
+		}
+
+		.duel-accordion__content {
+			padding: 0 14px 14px;
+		}
+
+		.duel-row {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			gap: 12px;
+			align-items: center;
+			padding: 14px 16px;
+			border-radius: 16px;
+			background: rgba(255,255,255,0.022);
+			border: 1px solid rgba(255,255,255,0.05);
+		}
+
+		.duel-row__meta,
+		.duel-row__summary {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.duel-row__date {
+			color: #86bef8;
+			font-size: 0.85rem;
+		}
+
+		.duel-row__match { font-weight: 700; }
+		.duel-row__score {
+			font-weight: 800;
+			letter-spacing: -0.04em;
+		}
+		.duel-row__mini {
+			color: var(--muted);
+			font-size: 0.88rem;
+		}
+
+		.duel-row__link {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 14px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			font-weight: 600;
+			white-space: nowrap;
+		}
+
+		.duel-pill {
+			display: inline-flex;
+			padding: 6px 10px;
+			border-radius: 999px;
+			font-size: 0.78rem;
+			font-weight: 700;
+		}
+		.duel-pill--win { background: rgba(83, 184, 255, 0.14); color: #8edfff; }
+		.duel-pill--draw { background: rgba(244, 196, 48, 0.12); color: var(--yellow); }
+		.duel-pill--loss { background: rgba(155, 124, 255, 0.14); color: #d2c1ff; }
+		.duel-pill--neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+		.duel-pill-team {
+			display: inline-flex;
+			padding: 6px 10px;
+			border-radius: 999px;
+			font-size: 0.78rem;
+			font-weight: 700;
+		}
+		.duel-pill-team--win { background: rgba(53, 199, 89, 0.12); color: var(--green-soft); }
+		.duel-pill-team--draw { background: rgba(244, 196, 48, 0.12); color: var(--yellow); }
+		.duel-pill-team--loss { background: rgba(255, 93, 93, 0.12); color: #ff8b8b; }
+		.duel-pill-team--neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+		.empty-state {
+			padding: 42px 18px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			display: block;
+			margin-bottom: 8px;
+			color: var(--text);
+			font-size: 1rem;
+		}
+
+		.empty-state--panel { padding: 52px 18px; }
+		.empty-state--soft {
+			padding: 28px 18px;
+			border-radius: 16px;
+			background: rgba(255,255,255,0.022);
+			border: 1px solid rgba(255,255,255,0.05);
+		}
+
+		@media (max-width: 1180px) {
+			.duel-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+			.duel-rival-focus { grid-template-columns: 1fr; }
+			.duel-rival-focus__side,
+			.duel-rival-focus__side--right { text-align: center; }
+		}
+
+		@media (max-width: 920px) {
+			.filters-summary { width: 100%; margin-left: 0; }
+			.duel-hero__players { grid-template-columns: 1fr; }
+			.duel-hero__versus { justify-self: center; }
+			.duel-player,
+			.duel-player--right { justify-content: flex-start; text-align: left; }
+		}
+
+		@media (max-width: 700px) {
+			.app-shell { width: min(calc(100% - 20px), var(--max-width)); padding-top: 20px; }
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				width: 100%;
+				padding: 6px;
+				margin-bottom: 16px;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+			.tabs::-webkit-scrollbar { display: none; }
+			.tab {
+				flex: 0 0 auto;
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+			}
+			.filters-bar { padding: 16px 16px 0; gap: 12px; }
+			.filter-field { min-width: 100%; }
+			.swap-button {
+				width: 100%;
+				min-height: 46px;
+			}
+			.filters-summary {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 8px;
+			}
+			.filter-chip {
+				padding: 10px 12px;
+				font-size: 0.82rem;
+				border-radius: 14px;
+			}
+			.duels-shell { padding: 16px; }
+			.duel-hero {
+				padding: 16px;
+				gap: 14px;
+			}
+			.duel-hero__players { gap: 12px; }
+			.duel-player,
+			.duel-player--right {
+				gap: 12px;
+			}
+			.duel-player__avatar {
+				width: 72px;
+				height: 72px;
+				flex: 0 0 72px;
+				border-radius: 20px;
+			}
+			.duel-player__name {
+				font-size: clamp(1.45rem, 7vw, 2rem);
+			}
+			.duel-hero__versus {
+				width: 58px;
+				height: 58px;
+				font-size: 1rem;
+			}
+			.duel-kpis { grid-template-columns: 1fr; }
+			.duel-section {
+				padding: 16px;
+				gap: 14px;
+			}
+			.duel-section__head {
+				align-items: flex-start;
+				gap: 10px;
+				padding-bottom: 10px;
+			}
+			.duel-section__head p {
+				font-size: 0.84rem;
+				line-height: 1.4;
+			}
+			.duel-section__badge {
+				font-size: 0.78rem;
+				padding: 7px 10px;
+			}
+			.duel-rival-focus,
+			.duel-team-focus__inner {
+				padding: 14px;
+				border-radius: 18px;
+			}
+			.duel-rival-focus__side,
+			.duel-rival-focus__center {
+				padding: 14px;
+				border-radius: 16px;
+			}
+			.duel-rival-focus__record { font-size: clamp(2.1rem, 12vw, 3.2rem); }
+			.duel-team-focus__record { font-size: clamp(2.1rem, 12vw, 3.1rem); }
+			.duel-rival-focus__meta,
+			.duel-team-focus__meta {
+				font-size: 0.84rem;
+				line-height: 1.35;
+			}
+			.duel-accordion__summary {
+				padding: 14px 16px;
+			}
+			.duel-row { grid-template-columns: 1fr; }
+			.duel-accordion__summary { align-items: start; }
+			.duel-accordion__summary-main strong {
+				font-size: 0.96rem;
+			}
+			.duel-accordion__summary-main span,
+			.duel-accordion__badge {
+				font-size: 0.82rem;
+			}
+			.duel-row {
+				gap: 10px;
+				padding: 14px 0;
+			}
+			.duel-row__summary { gap: 8px; }
+			.duel-row__date,
+			.duel-row__mini,
+			.duel-row__link {
+				font-size: 0.82rem;
+			}
+			.duel-row__link { width: 100%; }
+		}
+
+		@media (max-width: 520px) {
+			.filters-summary { grid-template-columns: 1fr; }
+			.duels-shell { padding: 14px; gap: 14px; }
+			.duel-hero,
+			.duel-section { padding: 14px; }
+			.duel-player__avatar {
+				width: 64px;
+				height: 64px;
+				flex: 0 0 64px;
+				border-radius: 18px;
+			}
+			.duel-player__label {
+				font-size: 0.7rem;
+			}
+			.duel-player__name {
+				font-size: clamp(1.35rem, 8vw, 1.8rem);
+			}
+			.duel-rival-focus,
+			.duel-team-focus__inner {
+				padding: 12px;
+			}
+			.duel-rival-focus__side,
+			.duel-rival-focus__center {
+				padding: 12px;
+			}
+			.duel-rival-focus__value {
+				font-size: clamp(1.8rem, 10vw, 2.4rem);
+			}
+			.duel-rival-focus__record,
+			.duel-team-focus__record {
+				gap: 6px;
+			}
+			.duel-rival-focus__legend,
+			.duel-team-focus__legend {
+				font-size: 0.82rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="true">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<article class="panel">
+			<div class="filters-bar" aria-label="Filtros de duelos">
+				<div class="filter-field">
+					<label for="js-filter-year">Año</label>
+					<select class="filter-select" id="js-filter-year"></select>
+				</div>
+
+				<div class="filter-field">
+					<label for="js-filter-min-matches">PJ mínimos</label>
+					<select class="filter-select" id="js-filter-min-matches"></select>
+				</div>
+
+				<div class="filter-field">
+					<label for="js-filter-player-a">Jugador A</label>
+					<select class="filter-select" id="js-filter-player-a"></select>
+				</div>
+
+				<div class="filter-field">
+					<label for="js-filter-player-b">Jugador B</label>
+					<select class="filter-select" id="js-filter-player-b"></select>
+				</div>
+
+				<button class="swap-button" id="js-swap-players" type="button">Intercambiar</button>
+
+				<div class="filters-summary" aria-live="polite">
+					<span class="filter-chip">Año: <strong id="js-active-year">--</strong></span>
+					<span class="filter-chip">PJ mín: <strong id="js-active-min-pj">--</strong></span>
+					<span class="filter-chip">Coincidencias: <strong id="js-active-total">--</strong></span>
+					<span class="filter-chip">Juntos: <strong id="js-active-shared">--</strong></span>
+					<span class="filter-chip">En contra: <strong id="js-active-against">--</strong></span>
+				</div>
+			</div>
+
+			<div class="duels-shell" id="js-duels-shell">
+				<div class="panel empty-state empty-state--panel">
+					<strong>Conectando</strong>
+					<span>Preparando el historial directo entre jugadores...</span>
+				</div>
+			</div>
+		</article>
+	</main>
+
+	<script src="./lector_datos.js"></script>
+	<script src="./Duelos.js"></script>
+</body>
+</html>
