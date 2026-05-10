@@ -170,6 +170,31 @@ function poblarFiltroAnios(aniosDisponibles) {
 	selector.value = String(estadoTablaGeneral.filtros.anio);
 }
 
+function obtenerFiltrosInicialesDesdeUrl(aniosDisponibles) {
+	const params = typeof window !== "undefined"
+		? new URLSearchParams(window.location.search)
+		: new URLSearchParams();
+	const anioParam = params.get("anio");
+	const minParam = params.get("min");
+	let anio = aniosDisponibles[0] ?? "historico";
+	let minPartidos = FILTRO_MIN_PARTIDOS_DEFAULT;
+
+	if (anioParam === "historico") {
+		anio = "historico";
+	} else if (anioParam) {
+		const anioNumero = Number.parseInt(anioParam, 10);
+		if (aniosDisponibles.includes(anioNumero)) {
+			anio = anioNumero;
+		}
+	}
+
+	if (minParam !== null) {
+		minPartidos = Math.max(0, normalizarEntero(minParam));
+	}
+
+	return { anio, minPartidos };
+}
+
 function actualizarResumenFiltros() {
 	const anioActivo = document.getElementById("js-active-year");
 	const minPartidosActivo = document.getElementById("js-active-min-matches");
@@ -547,13 +572,13 @@ async function iniciarTablaGeneral() {
 			.map(normalizarFilaCruda)
 			.filter((fila) => fila.partidoId && fila.jugador);
 		const aniosDisponibles = obtenerAniosDisponibles(filasNormalizadas);
-		const anioPorDefecto = aniosDisponibles[0] ?? "historico";
+		const filtrosIniciales = obtenerFiltrosInicialesDesdeUrl(aniosDisponibles);
 
 		window.__TORNEO_RAW_DATA__ = filasNormalizadas;
 		estadoTablaGeneral.filasCrudas = filasNormalizadas;
 		estadoTablaGeneral.aniosDisponibles = aniosDisponibles;
-		estadoTablaGeneral.filtros.anio = anioPorDefecto;
-		estadoTablaGeneral.filtros.minPartidos = FILTRO_MIN_PARTIDOS_DEFAULT;
+		estadoTablaGeneral.filtros.anio = filtrosIniciales.anio;
+		estadoTablaGeneral.filtros.minPartidos = filtrosIniciales.minPartidos;
 
 		poblarFiltroAnios(aniosDisponibles);
 		configurarEventosFiltros();

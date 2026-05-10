@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 	<title>Cancha Gonsa | Goleadores</title>
 	<style>
 		:root {
@@ -163,7 +163,7 @@
 			color: var(--muted);
 		}
 
-		.table-fullscreen-trigger {
+		.table-view-trigger {
 			display: none;
 			align-items: center;
 			justify-content: center;
@@ -180,51 +180,26 @@
 			cursor: pointer;
 		}
 
-		.table-fullscreen-trigger span {
+		.table-view-trigger span {
 			color: #97cbff;
 			font-size: 1rem;
 		}
 
-		body.table-fullscreen-open {
-			overflow: hidden;
-		}
-
-		.table-fullscreen {
-			position: fixed;
-			inset: 0;
-			z-index: 1200;
-			padding: 12px;
-			background: rgba(4, 8, 18, 0.84);
-			backdrop-filter: blur(12px);
-		}
-
-		.table-fullscreen[hidden] {
+		.table-zoom-toolbar {
 			display: none;
-		}
-
-		.table-fullscreen__dialog {
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-			max-height: 100dvh;
-			border-radius: 22px;
-			border: 1px solid rgba(83, 184, 255, 0.16);
-			background: linear-gradient(180deg, rgba(9, 14, 26, 0.98), rgba(11, 16, 32, 0.98));
-			box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
-			overflow: hidden;
-		}
-
-		.table-fullscreen__header {
-			display: flex;
 			align-items: flex-start;
 			justify-content: space-between;
 			gap: 14px;
-			padding: 16px;
+			padding: 14px 16px;
 			border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 			background: rgba(10, 15, 28, 0.96);
 		}
 
-		.table-fullscreen__eyebrow {
+		.table-zoom-toolbar__copy {
+			min-width: 0;
+		}
+
+		.table-zoom-toolbar__eyebrow {
 			display: block;
 			margin-bottom: 4px;
 			font-size: 0.76rem;
@@ -233,43 +208,69 @@
 			color: #86bef8;
 		}
 
-		.table-fullscreen__title {
+		.table-zoom-toolbar__title {
 			display: block;
 			font-size: 1.05rem;
 			font-weight: 700;
 			color: var(--text);
 		}
 
-		.table-fullscreen__hint {
+		.table-zoom-toolbar__hint {
 			display: block;
 			margin-top: 6px;
 			font-size: 0.84rem;
 			color: var(--muted);
 		}
 
-		.table-fullscreen__close {
+		.table-zoom-toolbar__back {
 			flex: 0 0 auto;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
 			padding: 10px 14px;
 			border: 1px solid rgba(255, 255, 255, 0.08);
 			border-radius: 12px;
 			background: rgba(255, 255, 255, 0.04);
 			color: var(--text);
-			font: inherit;
 			font-weight: 600;
-			cursor: pointer;
 		}
 
-		.table-fullscreen__content {
-			flex: 1;
-			min-height: 0;
-			padding: 12px;
+		body.table-zoom-view {
+			background: linear-gradient(180deg, #070b16 0%, #0b1020 100%);
 		}
 
-		.table-fullscreen__table-wrapper {
-			height: 100%;
-			overflow: auto;
+		body.table-zoom-view .hero,
+		body.table-zoom-view .tabs,
+		body.table-zoom-view .filters-bar,
+		body.table-zoom-view .table-scroll-hint,
+		body.table-zoom-view .table-view-trigger {
+			display: none !important;
+		}
+
+		body.table-zoom-view .app-shell {
+			width: 100%;
+			max-width: none;
 			padding: 0;
-			max-width: 100%;
+		}
+
+		body.table-zoom-view .panel {
+			min-height: 100dvh;
+			border-radius: 0;
+			border-left: 0;
+			border-right: 0;
+			box-shadow: none;
+		}
+
+		body.table-zoom-view .table-zoom-toolbar {
+			display: flex;
+			position: sticky;
+			top: 0;
+			z-index: 20;
+		}
+
+		body.table-zoom-view .table-wrapper {
+			padding: 12px;
+			min-height: calc(100dvh - 96px);
 		}
 
 		.table-wrapper::-webkit-scrollbar {
@@ -504,7 +505,7 @@
 				display: block;
 			}
 
-			.table-fullscreen-trigger {
+			.table-view-trigger {
 				display: inline-flex;
 			}
 
@@ -616,16 +617,16 @@
 			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
 		</nav>
 
-		<article class="panel" data-table-fullscreen-root>
+		<article class="panel" data-table-view-root>
 			<div class="filters-bar" aria-label="Filtros de goleadores">
 				<div class="filter-field">
 					<label for="js-filter-year">Año</label>
-					<select class="filter-select" id="js-filter-year" name="yearFilter"></select>
+					<select class="filter-select" id="js-filter-year" name="yearFilter" data-table-view-year></select>
 				</div>
 
 				<div class="filter-field">
 					<label for="js-filter-min-matches">Mín. PJ</label>
-					<select class="filter-select" id="js-filter-min-matches" name="minMatchesFilter">
+					<select class="filter-select" id="js-filter-min-matches" name="minMatchesFilter" data-table-view-min>
 						<option value="0">0+</option>
 						<option value="3" selected>3+</option>
 						<option value="5">5+</option>
@@ -641,12 +642,21 @@
 
 			<div class="table-scroll-hint">Deslizá horizontalmente para ver toda la tabla.</div>
 
-			<button class="table-fullscreen-trigger" type="button" data-table-fullscreen-open aria-expanded="false">
+			<button class="table-view-trigger" type="button" data-table-view-open>
 				<span>⤢</span>
-				Ver tabla en pantalla completa
+				Ver Tabla
 			</button>
 
-			<div class="table-wrapper" data-table-fullscreen-source>
+			<div class="table-zoom-toolbar">
+				<div class="table-zoom-toolbar__copy">
+					<span class="table-zoom-toolbar__eyebrow">Vista libre</span>
+					<strong class="table-zoom-toolbar__title">Goleadores</strong>
+					<span class="table-zoom-toolbar__hint">Usá el zoom del navegador y acomodá la tabla como prefieras en la pantalla.</span>
+				</div>
+				<a class="table-zoom-toolbar__back" href="./Goleadores.html" data-table-view-back>Volver</a>
+			</div>
+
+			<div class="table-wrapper">
 				<table>
 					<thead>
 						<tr>
@@ -668,20 +678,6 @@
 						</tr>
 					</tbody>
 				</table>
-			</div>
-
-			<div class="table-fullscreen" data-table-fullscreen-modal hidden aria-hidden="true">
-				<div class="table-fullscreen__dialog" data-table-fullscreen-dialog role="dialog" aria-modal="true" aria-label="Tabla de goleadores en pantalla completa">
-					<div class="table-fullscreen__header">
-						<div>
-							<span class="table-fullscreen__eyebrow">Modo mobile</span>
-							<strong class="table-fullscreen__title">Goleadores</strong>
-							<span class="table-fullscreen__hint">Deslizá para recorrerla completa. Si podés, girá el dispositivo para verla mejor.</span>
-						</div>
-						<button class="table-fullscreen__close" type="button" data-table-fullscreen-close>Cerrar</button>
-					</div>
-					<div class="table-fullscreen__content" data-table-fullscreen-content></div>
-				</div>
 			</div>
 		</article>
 	</main>

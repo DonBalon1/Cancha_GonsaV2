@@ -308,6 +308,31 @@ function poblarFiltroAnios(aniosDisponibles) {
 	selector.value = String(estadoGoleadores.filtros.anio);
 }
 
+function obtenerFiltrosInicialesDesdeUrl(aniosDisponibles) {
+	const params = typeof window !== "undefined"
+		? new URLSearchParams(window.location.search)
+		: new URLSearchParams();
+	const anioParam = params.get("anio");
+	const minParam = params.get("min");
+	let anio = aniosDisponibles[0] ?? "historico";
+	let minPartidos = GOLEADORES_MIN_PARTIDOS_DEFAULT;
+
+	if (anioParam === "historico") {
+		anio = "historico";
+	} else if (anioParam) {
+		const anioNumero = Number.parseInt(anioParam, 10);
+		if (aniosDisponibles.includes(anioNumero)) {
+			anio = anioNumero;
+		}
+	}
+
+	if (minParam !== null) {
+		minPartidos = Math.max(0, normalizarEntero(minParam));
+	}
+
+	return { anio, minPartidos };
+}
+
 function actualizarResumenFiltros() {
 	const anioActivo = document.getElementById("js-active-year");
 	const minPartidosActivo = document.getElementById("js-active-min-matches");
@@ -428,11 +453,12 @@ async function iniciarGoleadores() {
 			.map(normalizarFilaCruda)
 			.filter((fila) => fila.partidoId && fila.jugador);
 		const aniosDisponibles = obtenerAniosDisponibles(filasNormalizadas);
+		const filtrosIniciales = obtenerFiltrosInicialesDesdeUrl(aniosDisponibles);
 
 		estadoGoleadores.filasCrudas = filasNormalizadas;
 		estadoGoleadores.aniosDisponibles = aniosDisponibles;
-		estadoGoleadores.filtros.anio = aniosDisponibles[0] ?? "historico";
-		estadoGoleadores.filtros.minPartidos = GOLEADORES_MIN_PARTIDOS_DEFAULT;
+		estadoGoleadores.filtros.anio = filtrosIniciales.anio;
+		estadoGoleadores.filtros.minPartidos = filtrosIniciales.minPartidos;
 
 		window.__GOLEADORES_RAW_DATA__ = filasNormalizadas;
 

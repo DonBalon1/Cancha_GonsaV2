@@ -1,74 +1,71 @@
 (function () {
-	var roots = document.querySelectorAll('[data-table-fullscreen-root]');
-	if (!roots.length) {
+	var roots = document.querySelectorAll('[data-table-view-root]');
+	if (!roots.length || typeof window === 'undefined') {
 		return;
 	}
 
-	function limpiarIds(node) {
-		if (node.nodeType !== 1) {
+	var VIEW_PARAM = 'tableView';
+	var viewportMeta = document.querySelector('meta[name="viewport"]');
+
+	function actualizarViewportZoom() {
+		if (!viewportMeta) {
 			return;
 		}
 
-		if (node.hasAttribute('id')) {
-			node.removeAttribute('id');
-		}
-
-		Array.prototype.forEach.call(node.children, limpiarIds);
+		viewportMeta.setAttribute(
+			'content',
+			'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+		);
 	}
 
-	function inicializar(root) {
-		var openButton = root.querySelector('[data-table-fullscreen-open]');
-		var modal = root.querySelector('[data-table-fullscreen-modal]');
-		var content = root.querySelector('[data-table-fullscreen-content]');
-		var closeButton = root.querySelector('[data-table-fullscreen-close]');
-		var source = root.querySelector('[data-table-fullscreen-source]');
-		var dialog = modal ? modal.querySelector('[data-table-fullscreen-dialog]') : null;
+	function construirUrlVista(root) {
+		var url = new URL(window.location.href);
+		var selectorAnio = root.querySelector('[data-table-view-year]');
+		var selectorMin = root.querySelector('[data-table-view-min]');
 
-		if (!openButton || !modal || !content || !closeButton || !source || !dialog) {
-			return;
+		url.searchParams.set(VIEW_PARAM, '1');
+
+		if (selectorAnio && selectorAnio.value) {
+			url.searchParams.set('anio', selectorAnio.value);
 		}
 
-		function renderizarTabla() {
-			content.innerHTML = '';
-			var clone = source.cloneNode(true);
-			limpiarIds(clone);
-			clone.classList.add('table-fullscreen__table-wrapper');
-			content.appendChild(clone);
+		if (selectorMin && selectorMin.value) {
+			url.searchParams.set('min', selectorMin.value);
 		}
 
-		function abrir() {
-			renderizarTabla();
-			modal.hidden = false;
-			modal.setAttribute('aria-hidden', 'false');
-			document.body.classList.add('table-fullscreen-open');
-			openButton.setAttribute('aria-expanded', 'true');
-			closeButton.focus();
-		}
-
-		function cerrar() {
-			modal.hidden = true;
-			modal.setAttribute('aria-hidden', 'true');
-			document.body.classList.remove('table-fullscreen-open');
-			openButton.setAttribute('aria-expanded', 'false');
-			content.innerHTML = '';
-			openButton.focus();
-		}
-
-		openButton.addEventListener('click', abrir);
-		closeButton.addEventListener('click', cerrar);
-
-		modal.addEventListener('click', function (event) {
-			if (event.target === modal) {
-				cerrar();
-			}
-		});
-
-		document.addEventListener('keydown', function (event) {
-			if (event.key === 'Escape' && !modal.hidden) {
-				cerrar();
-			}
-		});
+		return url;
 	}
 
-	Array.prototype.forEach.call(roots, inicializar);
+	function construirUrlRegreso() {
+		var url = new URL(window.location.href);
+		url.searchParams.delete(VIEW_PARAM);
+		return url;
+	}
+
+	function activarVista(root) {
+		var volverLink = root.querySelector('[data-table-view-back]');
+		var returnUrl = construirUrlRegreso();
+
+		actualizarViewportZoom();
+		document.body.classList.add('table-zoom-view');
+
+		if (volverLink) {
+			volverLink.setAttribute('href', returnUrl.pathname + returnUrl.search + returnUrl.hash);
+		}
+	}
+
+	Array.prototype.forEach.call(roots, function (root) {
+		var openButton = root.querySelector('[data-table-view-open]');
+		if (openButton) {
+			openButton.addEventListener('click', function () {
+				var viewUrl = construirUrlVista(root);
+				window.location.href = viewUrl.pathname + viewUrl.search + viewUrl.hash;
+			});
+		}
+
+		var params = new URLSearchParams(window.location.search);
+		if (params.get(VIEW_PARAM) === '1') {
+			activarVista(root);
+		}
+	});
 })();
