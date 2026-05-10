@@ -285,6 +285,18 @@
 		body.table-zoom-view .table-wrapper {
 			padding: 12px;
 			min-height: calc(100dvh - 96px);
+			overflow: hidden;
+		}
+
+		body.table-zoom-view .table-fit-stage {
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+		}
+
+		body.table-zoom-view .table-fit-inner {
+			transform-origin: top left;
+			will-change: transform;
 		}
 
 		.table-wrapper::-webkit-scrollbar {
