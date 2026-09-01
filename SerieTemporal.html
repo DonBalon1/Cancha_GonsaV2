@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%BD%EF%B8%8F%3C/text%3E%3C/svg%3E">
+	<title>Cancha Gonsa | Serie Temporal</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--line-strong: rgba(110, 142, 198, 0.25);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--green: #35c759;
+			--yellow: #f4c430;
+			--red: #ff5d5d;
+			--gray: #8a93a8;
+			--blue: #53b8ff;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--max-width: 1400px;
+		}
+
+		* { box-sizing: border-box; }
+
+		html { color-scheme: dark; }
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 24px), var(--max-width));
+			margin: 0 auto;
+			padding: 24px 0 34px;
+		}
+
+		.hero { margin-bottom: 16px; }
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+			line-height: 1;
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 18px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+		}
+
+		.filters-bar {
+			display: flex;
+			align-items: end;
+			gap: 14px;
+			padding: 16px 16px 0;
+			flex-wrap: wrap;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 170px;
+		}
+
+		.filter-field--compact {
+			min-width: 130px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select {
+			width: 100%;
+			padding: 11px 13px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.filter-select:focus {
+			border-color: rgba(83, 184, 255, 0.45);
+			box-shadow: 0 0 0 3px rgba(83, 184, 255, 0.12);
+		}
+
+		.filters-summary {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-left: auto;
+		}
+
+		.filter-chip {
+			padding: 10px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.035);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			color: var(--muted);
+			font-size: 0.86rem;
+		}
+
+		.filter-chip strong { color: var(--text); }
+
+		.legend {
+			display: flex;
+			gap: 8px;
+			flex-wrap: wrap;
+			padding: 14px 16px 12px;
+		}
+
+		.legend-item {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 7px 11px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			font-size: 0.8rem;
+			color: #cdd8f4;
+		}
+
+		.legend-dot {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			display: inline-block;
+		}
+
+		.legend-dot--win { background: var(--green); }
+		.legend-dot--draw { background: var(--yellow); }
+		.legend-dot--loss { background: var(--red); }
+		.legend-dot--abs { background: var(--gray); }
+
+		.matrix-wrap {
+			overflow: auto;
+			padding: 0 16px 16px;
+		}
+
+		.temporal-table {
+			width: max-content;
+			min-width: 100%;
+			border-collapse: separate;
+			border-spacing: 0;
+		}
+
+		.temporal-table th,
+		.temporal-table td {
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			padding: 6px 2px;
+			vertical-align: middle;
+		}
+
+		.temporal-table th.sticky-col,
+		.temporal-table td.sticky-col {
+			padding: 8px;
+		}
+
+		.temporal-table thead th {
+			position: sticky;
+			top: 0;
+			z-index: 6;
+			background: rgba(12, 18, 33, 0.96);
+			backdrop-filter: blur(10px);
+			border-bottom-color: var(--line-strong);
+		}
+
+		.temporal-table thead th.sticky-col {
+			z-index: 8;
+		}
+
+		.temporal-table tbody tr:hover td {
+			background: rgba(83, 184, 255, 0.04);
+		}
+
+		.temporal-table tbody tr:hover td.sticky-col {
+			background: rgba(19, 26, 46, 0.98);
+		}
+
+		.sticky-col {
+			position: sticky;
+			left: 0;
+			z-index: 4;
+			background: rgba(19, 26, 46, 0.96);
+			backdrop-filter: blur(8px);
+		}
+
+		.sticky-col--rank {
+			left: 0;
+			width: 72px;
+			min-width: 72px;
+			max-width: 72px;
+			text-align: center;
+			font-weight: 800;
+			color: #97c7ff;
+		}
+
+		.position-cell {
+			width: 72px;
+		}
+
+		.rank-badge {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			min-width: 40px;
+			padding: 8px 8px;
+			border-radius: 14px;
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.28), rgba(83, 184, 255, 0.08));
+			border: 1px solid rgba(83, 184, 255, 0.18);
+			font-weight: 700;
+			color: var(--text);
+			line-height: 1;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.rank-badge[data-rank="1"] {
+			background: linear-gradient(135deg, rgba(255, 220, 82, 0.36), rgba(255, 220, 82, 0.1));
+			border-color: rgba(255, 220, 82, 0.25);
+		}
+
+		.rank-badge[data-rank="2"] {
+			background: linear-gradient(135deg, rgba(144, 199, 255, 0.3), rgba(144, 199, 255, 0.08));
+			border-color: rgba(144, 199, 255, 0.22);
+		}
+
+		.rank-badge[data-rank="3"] {
+			background: linear-gradient(135deg, rgba(255, 161, 96, 0.3), rgba(255, 161, 96, 0.08));
+			border-color: rgba(255, 161, 96, 0.22);
+		}
+
+		.rank-badge__icon {
+			font-size: 1rem;
+		}
+
+		.sticky-col--player {
+			left: 72px;
+			width: 220px;
+			min-width: 220px;
+			max-width: 220px;
+		}
+
+		.header-cell {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			min-width: 30px;
+			width: 30px;
+			height: 124px;
+		}
+
+		.header-cell__match,
+		.header-cell__date {
+			font-weight: 800;
+			letter-spacing: 0.04em;
+			writing-mode: vertical-rl;
+			text-orientation: mixed;
+			line-height: 1;
+		}
+
+		.header-cell__match {
+			font-size: 0.54rem;
+			color: #7fc6ff;
+		}
+
+		.header-cell__date {
+			font-size: 0.62rem;
+			color: #cfd8ef;
+		}
+
+		.header-cell__date-link {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			color: inherit;
+			text-decoration: none;
+			border-radius: 6px;
+			padding: 1px 0;
+			outline: none;
+			transition: color 0.16s ease, text-shadow 0.16s ease;
+		}
+
+		.header-cell__date-link:hover,
+		.header-cell__date-link:focus-visible {
+			color: #f0f6ff;
+			text-shadow: 0 0 10px rgba(127, 198, 255, 0.34);
+		}
+
+		.player-cell {
+			display: grid;
+			grid-template-columns: 40px minmax(0, 1fr);
+			gap: 8px;
+			align-items: center;
+		}
+
+		.player-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 12px;
+			object-fit: cover;
+			background: linear-gradient(135deg, #1d2949, #0f162a);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+		}
+
+		.player-meta {
+			display: grid;
+			gap: 3px;
+			min-width: 0;
+		}
+
+		.player-name {
+			font-size: 0.9rem;
+			font-weight: 700;
+			line-height: 1.1;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.player-stats {
+			font-size: 0.67rem;
+			color: var(--muted);
+			letter-spacing: 0.02em;
+			text-transform: uppercase;
+		}
+
+		.player-stats__pts {
+			color: #f0d57a;
+			font-weight: 760;
+			letter-spacing: 0.03em;
+		}
+
+		.result-cell {
+			width: 30px;
+			min-width: 30px;
+			text-align: center;
+		}
+
+		.result-dot {
+			height: 24px;
+			min-width: 24px;
+			padding: 0 5px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 9px;
+			font-size: 0.76rem;
+			font-weight: 720;
+			line-height: 1;
+			font-variant-numeric: tabular-nums;
+			border: 1px solid rgba(255, 255, 255, 0.12);
+			color: #e9f0ff;
+			background: rgba(120, 133, 160, 0.18);
+			backdrop-filter: blur(2px);
+		}
+
+		.result-dot--win {
+			background: rgba(71, 199, 126, 0.28);
+			border-color: rgba(124, 231, 162, 0.42);
+		}
+
+		.result-dot--draw {
+			background: rgba(244, 196, 48, 0.24);
+			border-color: rgba(250, 220, 113, 0.4);
+		}
+
+		.result-dot--loss {
+			background: rgba(255, 93, 93, 0.24);
+			border-color: rgba(255, 146, 146, 0.42);
+		}
+
+		.result-dot--g0 {
+			opacity: 0.82;
+			font-size: 0.68rem;
+			font-weight: 660;
+		}
+
+		.result-dot--g1 {
+			opacity: 0.9;
+			font-size: 0.74rem;
+			font-weight: 700;
+		}
+
+		.result-dot--g2 {
+			opacity: 0.98;
+			font-size: 0.76rem;
+			font-weight: 730;
+		}
+
+		.result-dot--g3 {
+			opacity: 1;
+			font-size: 0.78rem;
+			font-weight: 760;
+		}
+
+		.result-dot--g4 {
+			opacity: 1;
+			font-size: 0.8rem;
+			font-weight: 800;
+		}
+
+		.result-dot--g5 {
+			opacity: 1;
+			font-size: 0.84rem;
+			font-weight: 820;
+		}
+
+		.result-dot--absent {
+			font-size: 0.49rem;
+			letter-spacing: 0.04em;
+			color: #d7deef;
+			background: rgba(140, 151, 176, 0.52);
+			border-color: rgba(179, 189, 212, 0.5);
+		}
+
+		.empty-state {
+			display: grid;
+			gap: 6px;
+			padding: 28px 20px 32px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			color: var(--text);
+			font-size: 1.05rem;
+		}
+
+		@media (max-width: 860px) {
+			.app-shell { width: min(calc(100% - 16px), var(--max-width)); }
+			.filters-summary { margin-left: 0; }
+			.sticky-col--rank {
+				width: 62px;
+				min-width: 62px;
+				max-width: 62px;
+			}
+			.position-cell {
+				width: 62px;
+			}
+			.rank-badge {
+				min-width: 34px;
+				padding: 7px 6px;
+				gap: 4px;
+				border-radius: 12px;
+			}
+			.rank-badge__icon {
+				font-size: 0.9rem;
+			}
+			.sticky-col--player {
+				left: 62px;
+				width: 178px;
+				min-width: 178px;
+				max-width: 178px;
+			}
+			.player-cell {
+				grid-template-columns: 34px minmax(0, 1fr);
+				gap: 7px;
+			}
+			.player-avatar {
+				width: 34px;
+				height: 34px;
+				border-radius: 10px;
+			}
+			.player-name { font-size: 0.84rem; }
+			.player-stats { font-size: 0.66rem; }
+			.player-stats__pts {
+				letter-spacing: 0.02em;
+			}
+			.result-cell {
+				width: 28px;
+				min-width: 28px;
+			}
+			.result-dot {
+				height: 22px;
+				min-width: 22px;
+				padding: 0 4px;
+				font-size: 0.7rem;
+			}
+			.header-cell {
+				min-width: 28px;
+				width: 28px;
+				height: 116px;
+			}
+			.header-cell {
+				gap: 4px;
+			}
+			.header-cell__match {
+				font-size: 0.5rem;
+			}
+			.header-cell__date {
+				font-size: 0.56rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Cancha Gonsa ⚽</h1>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./SerieTemporal.html" aria-selected="true">Serie Temporal</a>
+			<a class="tab" href="./Graficos.html" aria-selected="false">Graficos</a>
+
+			<a class="tab" href="./Records.html" aria-selected="false">Récords</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmarés</a>
+		</nav>
+
+		<article class="panel">
+			<div class="filters-bar" aria-label="Filtros de serie temporal">
+				<div class="filter-field">
+					<label for="js-filter-year">Año</label>
+					<select class="filter-select" id="js-filter-year"></select>
+				</div>
+
+				<div class="filter-field filter-field--compact">
+					<label for="js-filter-min-matches">Mín. PJ</label>
+					<select class="filter-select" id="js-filter-min-matches"></select>
+				</div>
+
+				<div class="filters-summary" aria-live="polite">
+					<span class="filter-chip">Año: <strong id="js-active-year">--</strong></span>
+					<span class="filter-chip">Mín. PJ: <strong id="js-active-min-matches">--</strong></span>
+					<span class="filter-chip">Jugadores: <strong id="js-active-players">--</strong></span>
+					<span class="filter-chip">Partidos: <strong id="js-active-matches">--</strong></span>
+				</div>
+			</div>
+
+			<div class="legend" aria-label="Leyenda de resultados">
+				<span class="legend-item"><span class="legend-dot legend-dot--win"></span>Victoria (G)</span>
+				<span class="legend-item"><span class="legend-dot legend-dot--draw"></span>Empate (E)</span>
+				<span class="legend-item"><span class="legend-dot legend-dot--loss"></span>Derrota (P)</span>
+				<span class="legend-item"><span class="legend-dot legend-dot--abs"></span>Ausente (AUS)</span>
+			</div>
+
+			<div class="matrix-wrap" id="js-matrix-wrap">
+				<div class="empty-state">
+					<strong>Preparando mapa de la temporada</strong>
+					Cargando partidos y armando la matriz temporal de jugadores.
+				</div>
+			</div>
+		</article>
+	</main>
+
+	<script src="./tabs.js"></script>
+	<script src="./lector_datos.js"></script>
+	<script src="./SerieTemporal.js"></script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%BD%EF%B8%8F%3C/text%3E%3C/svg%3E">
+	<title>Cancha Gonsa | Graficos</title>
+	<style>
+		:root {
+			--bg: #0b1020;
+			--panel: rgba(19, 26, 46, 0.88);
+			--line: rgba(110, 142, 198, 0.14);
+			--line-strong: rgba(110, 142, 198, 0.24);
+			--text: #eef3ff;
+			--muted: #8f9ab8;
+			--blue: #53b8ff;
+			--shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+			--radius-xl: 24px;
+			--radius-lg: 18px;
+			--radius-md: 14px;
+			--max-width: 1400px;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			color-scheme: dark;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: Inter, "Segoe UI", Roboto, sans-serif;
+			background:
+				radial-gradient(circle at top, rgba(83, 184, 255, 0.12), transparent 30%),
+				linear-gradient(180deg, #09101e 0%, #0b1020 100%);
+			color: var(--text);
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.app-shell {
+			width: min(calc(100% - 24px), var(--max-width));
+			margin: 0 auto;
+			padding: 24px 0 38px;
+		}
+
+		.hero {
+			margin-bottom: 14px;
+		}
+
+		.hero h1 {
+			margin: 0;
+			font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+			line-height: 1;
+		}
+
+		.hero p {
+			margin: 10px 0 0;
+			color: var(--muted);
+		}
+
+		.tabs {
+			display: inline-flex;
+			gap: 8px;
+			padding: 8px;
+			margin-bottom: 18px;
+			flex-wrap: wrap;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: rgba(19, 26, 46, 0.72);
+			backdrop-filter: blur(16px);
+		}
+
+		.tab {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 999px;
+			padding: 11px 18px;
+			background: transparent;
+			color: var(--muted);
+			font: inherit;
+			transition: background 0.2s ease, color 0.2s ease;
+		}
+
+		.tab[aria-selected="true"] {
+			background: linear-gradient(135deg, rgba(83, 184, 255, 0.16), rgba(83, 184, 255, 0.08));
+			color: var(--text);
+			box-shadow: inset 0 0 0 1px rgba(83, 184, 255, 0.18);
+		}
+
+		.panel {
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: var(--radius-xl);
+			box-shadow: var(--shadow);
+			backdrop-filter: blur(18px);
+			padding: 18px;
+			margin-bottom: 16px;
+		}
+
+		.panel-head {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 14px;
+			flex-wrap: wrap;
+			margin-bottom: 12px;
+		}
+
+		.section-eyebrow {
+			font-size: 0.76rem;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: #8bc7ff;
+		}
+
+		.section-title {
+			margin: 4px 0 0;
+			font-size: 1.3rem;
+		}
+
+		.section-subtitle {
+			margin: 6px 0 0;
+			font-size: 0.92rem;
+			color: var(--muted);
+		}
+
+		.controls {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			align-items: end;
+		}
+
+		.filter-field {
+			display: grid;
+			gap: 8px;
+			min-width: 170px;
+		}
+
+		.filter-field--sm {
+			min-width: 140px;
+		}
+
+		.filter-field label {
+			font-size: 0.76rem;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			color: #86bef8;
+		}
+
+		.filter-select,
+		.filter-button {
+			width: 100%;
+			padding: 11px 13px;
+			border-radius: 14px;
+			border: 1px solid rgba(83, 184, 255, 0.14);
+			background: rgba(8, 14, 26, 0.92);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+		}
+
+		.filter-button {
+			cursor: pointer;
+			font-weight: 600;
+		}
+
+		.filter-select:focus,
+		.filter-button:hover,
+		.filter-button:focus-visible {
+			border-color: rgba(83, 184, 255, 0.45);
+			box-shadow: 0 0 0 3px rgba(83, 184, 255, 0.12);
+		}
+
+		.toggle {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 0.88rem;
+			color: #c7d4f4;
+		}
+
+		.toggle input {
+			accent-color: var(--blue);
+		}
+
+		.chart-card {
+			border: 1px solid rgba(255, 255, 255, 0.06);
+			border-radius: var(--radius-lg);
+			padding: 14px;
+			background: rgba(10, 16, 30, 0.62);
+		}
+
+		.chart-title {
+			margin: 0 0 10px;
+			font-size: 1rem;
+		}
+
+		.chart-wrap {
+			position: relative;
+			height: 360px;
+		}
+
+		.chart-wrap--sm {
+			height: 300px;
+		}
+
+		.chart-grid-2 {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 14px;
+		}
+
+		.chart-grid-2--temporal {
+			grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.6fr);
+			align-items: stretch;
+		}
+
+		.chart-card--temporal-chart {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.chart-card--temporal-chart .chart-wrap {
+			flex: 1;
+			height: auto;
+			min-height: 460px;
+		}
+
+		.kpi-row {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 10px;
+			margin-top: 2px;
+		}
+
+		.kpi {
+			border: 1px solid rgba(255, 255, 255, 0.07);
+			border-radius: 12px;
+			padding: 10px 12px;
+			background: rgba(255, 255, 255, 0.02);
+		}
+
+		.kpi__label {
+			display: block;
+			font-size: 0.74rem;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--muted);
+		}
+
+		.kpi__value {
+			display: block;
+			margin-top: 4px;
+			font-size: 1.1rem;
+			font-weight: 700;
+		}
+
+		.player-picker {
+			border: 1px solid rgba(255, 255, 255, 0.07);
+			border-radius: 12px;
+			background: rgba(255, 255, 255, 0.02);
+			padding: 10px;
+			min-height: 150px;
+			max-height: 210px;
+			overflow: auto;
+		}
+
+		.player-picker__list {
+			display: grid;
+			gap: 6px;
+		}
+
+		.player-picker__item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 7px;
+			border-radius: 8px;
+			background: rgba(255, 255, 255, 0.02);
+		}
+
+		.player-picker__item input {
+			accent-color: #5ec7ff;
+		}
+
+		.player-picker__hint {
+			margin-top: 8px;
+			font-size: 0.82rem;
+			color: var(--muted);
+		}
+
+		.helper-text {
+			margin: 4px 0 0;
+			font-size: 0.84rem;
+			color: var(--muted);
+		}
+
+		.empty-state {
+			display: grid;
+			gap: 7px;
+			padding: 30px 18px;
+			text-align: center;
+			color: var(--muted);
+		}
+
+		.empty-state strong {
+			color: var(--text);
+			font-size: 1.05rem;
+		}
+
+		@media (max-width: 1080px) {
+			.chart-grid-2,
+			.kpi-row {
+				grid-template-columns: 1fr;
+			}
+
+			.chart-card--temporal-chart .chart-wrap {
+				min-height: 360px;
+			}
+		}
+
+		@media (max-width: 860px) {
+			.app-shell {
+				width: min(calc(100% - 16px), var(--max-width));
+			}
+
+			.chart-wrap {
+				height: 310px;
+			}
+
+			.chart-wrap--sm {
+				height: 270px;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.tabs {
+				display: flex;
+				flex-wrap: nowrap;
+				overflow-x: auto;
+				padding: 6px;
+				margin-bottom: 16px;
+				width: 100%;
+				-webkit-overflow-scrolling: touch;
+				scrollbar-width: none;
+			}
+
+			.tabs::-webkit-scrollbar {
+				display: none;
+			}
+
+			.tab {
+				white-space: nowrap;
+				padding: 10px 14px;
+				font-size: 0.92rem;
+				flex: 0 0 auto;
+			}
+
+			.panel {
+				padding: 14px;
+			}
+
+			.filter-field,
+			.filter-field--sm {
+				min-width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="app-shell">
+		<section class="hero" aria-label="Encabezado principal">
+			<h1>Graficos del Torneo</h1>
+			<p>Explora relaciones entre jugadores, evolucion por fecha y comportamiento general del torneo.</p>
+		</section>
+
+		<nav class="tabs" aria-label="Secciones del sitio">
+			<a class="tab" href="./tabla.html" aria-selected="false">Tabla General</a>
+			<a class="tab" href="./Goleadores.html" aria-selected="false">Goleadores</a>
+			<a class="tab" href="./Partidos.html" aria-selected="false">Partidos</a>
+			<a class="tab" href="./Resumen.html" aria-selected="false">Resumen</a>
+			<a class="tab" href="./Jugadores.html" aria-selected="false">Jugadores</a>
+			<a class="tab" href="./Duelos.html" aria-selected="false">Duelos</a>
+			<a class="tab" href="./Rachas.html" aria-selected="false">Rachas</a>
+			<a class="tab" href="./SerieTemporal.html" aria-selected="false">Serie Temporal</a>
+			<a class="tab" href="./Graficos.html" aria-selected="true">Graficos</a>
+			<a class="tab" href="./Records.html" aria-selected="false">Records</a>
+			<a class="tab" href="./Palmares.html" aria-selected="false">Palmares</a>
+		</nav>
+
+		<article class="panel">
+			<div class="panel-head">
+				<div>
+					<span class="section-eyebrow">Control Global</span>
+					<h2 class="section-title">Graficos</h2>
+				</div>
+				<div class="controls">
+					<div class="filter-field filter-field--sm">
+						<label for="js-year-filter">Ano</label>
+						<select class="filter-select" id="js-year-filter"></select>
+					</div>
+				</div>
+			</div>
+			<div class="kpi-row" aria-live="polite">
+				<div class="kpi"><span class="kpi__label">Jugadores</span><span class="kpi__value" id="js-kpi-players">--</span></div>
+				<div class="kpi"><span class="kpi__label">Partidos</span><span class="kpi__value" id="js-kpi-matches">--</span></div>
+				<div class="kpi"><span class="kpi__label">Goles</span><span class="kpi__value" id="js-kpi-goals">--</span></div>
+				<div class="kpi"><span class="kpi__label">Prom. goles/partido</span><span class="kpi__value" id="js-kpi-goals-rate">--</span></div>
+			</div>
+		</article>
+
+		<article class="panel">
+			<div class="panel-head">
+				<div>
+					<span class="section-eyebrow">Comparacion Entre Jugadores</span>
+					<h2 class="section-title">Scatter Plot configurable</h2>
+					<p class="section-subtitle">Cada punto es un jugador. Cambia ejes para detectar relaciones.</p>
+				</div>
+				<div class="controls">
+					<div class="filter-field filter-field--sm">
+						<label for="js-scatter-x">Eje X</label>
+						<select class="filter-select" id="js-scatter-x"></select>
+					</div>
+					<div class="filter-field filter-field--sm">
+						<label for="js-scatter-y">Eje Y</label>
+						<select class="filter-select" id="js-scatter-y"></select>
+					</div>
+					<label class="toggle" for="js-scatter-trend">
+						<input type="checkbox" id="js-scatter-trend">
+						Linea de tendencia
+					</label>
+				</div>
+			</div>
+			<div class="chart-card">
+				<div class="chart-wrap"><canvas id="js-chart-scatter"></canvas></div>
+				<p class="helper-text" id="js-scatter-help">Click en un punto para resaltarlo. Solo se muestran jugadores con 5+ PJ.</p>
+			</div>
+		</article>
+
+		<article class="panel">
+			<div class="panel-head">
+				<div>
+					<span class="section-eyebrow">Evolucion Temporal</span>
+					<h2 class="section-title">Trayectoria durante la temporada</h2>
+					<p class="section-subtitle">Compara jugadores seleccionados por fecha del torneo (solo jugadores con 5+ PJ).</p>
+				</div>
+			</div>
+			<div class="chart-grid-2 chart-grid-2--temporal">
+				<div class="chart-card">
+					<div class="controls">
+						<div class="filter-field">
+							<label for="js-temporal-variable">Variable</label>
+							<select class="filter-select" id="js-temporal-variable"></select>
+						</div>
+					</div>
+					<div class="controls" style="margin-top:10px;">
+						<button class="filter-button" id="js-select-top">Seleccionar top 5</button>
+						<button class="filter-button" id="js-select-all">Seleccionar todos</button>
+						<button class="filter-button" id="js-clear-selection">Limpiar</button>
+					</div>
+					<div class="player-picker" id="js-player-picker">
+						<div class="player-picker__list" id="js-player-picker-list"></div>
+					</div>
+					<p class="player-picker__hint" id="js-player-limit">Recomendado: hasta 8 jugadores simultaneos para preservar legibilidad.</p>
+				</div>
+				<div class="chart-card chart-card--temporal-chart">
+					<div class="chart-wrap"><canvas id="js-chart-temporal"></canvas></div>
+				</div>
+			</div>
+		</article>
+
+		<article class="panel">
+			<div class="panel-head">
+				<div>
+					<span class="section-eyebrow">El Torneo</span>
+					<h2 class="section-title">Actividad y produccion mensual</h2>
+					<p class="section-subtitle">Estadisticas globales del torneo por mes.</p>
+				</div>
+			</div>
+			<div class="chart-grid-2">
+				<div class="chart-card">
+					<h3 class="chart-title">Goles por mes</h3>
+					<div class="chart-wrap chart-wrap--sm"><canvas id="js-chart-goals-month"></canvas></div>
+				</div>
+				<div class="chart-card">
+					<h3 class="chart-title">Partidos por mes</h3>
+					<div class="chart-wrap chart-wrap--sm"><canvas id="js-chart-matches-month"></canvas></div>
+				</div>
+			</div>
+			<div class="chart-card" style="margin-top:14px;">
+				<h3 class="chart-title">Promedio de goles por partido por mes</h3>
+				<div class="chart-wrap chart-wrap--sm"><canvas id="js-chart-goals-rate-month"></canvas></div>
+			</div>
+		</article>
+
+		<article class="panel">
+			<div class="panel-head">
+				<div>
+					<span class="section-eyebrow">Distribuciones</span>
+					<h2 class="section-title">Como se distribuyen los resultados</h2>
+				</div>
+			</div>
+			<div class="chart-grid-2">
+				<div class="chart-card">
+					<div class="controls">
+						<div class="filter-field">
+							<label for="js-player-hist-variable">Distribucion de jugadores</label>
+							<select class="filter-select" id="js-player-hist-variable"></select>
+						</div>
+					</div>
+					<p class="helper-text">Solo se consideran jugadores con 5+ PJ.</p>
+					<div class="chart-wrap chart-wrap--sm" style="margin-top:8px;"><canvas id="js-chart-player-hist"></canvas></div>
+				</div>
+				<div class="chart-card">
+					<div class="controls">
+						<div class="filter-field">
+							<label for="js-match-hist-variable">Distribucion de partidos</label>
+							<select class="filter-select" id="js-match-hist-variable"></select>
+						</div>
+					</div>
+					<div class="chart-wrap chart-wrap--sm" style="margin-top:8px;"><canvas id="js-chart-match-hist"></canvas></div>
+				</div>
+			</div>
+		</article>
+
+		<div class="panel" id="js-empty-state" style="display:none;">
+			<div class="empty-state">
+				<strong>No hay datos para este filtro</strong>
+				Cambie el ano seleccionado para visualizar graficos.
+			</div>
+		</div>
+	</main>
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+	<script src="./tabs.js"></script>
+	<script src="./lector_datos.js"></script>
+	<script src="./Graficos.js"></script>
+</body>
+</html>
