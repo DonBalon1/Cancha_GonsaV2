@@ -1,5 +1,5 @@
 const FILTRO_HISTORICO = "historico";
-const MIN_PARTIDOS_PROMEDIO_TEMPORADA = 5;
+const MIN_PARTIDOS_PROMEDIO_TEMPORADA = 10;
 
 const estadoRecords = {
 	filasCrudas: [],

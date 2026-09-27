@@ -413,14 +413,18 @@ function construirBloquesRachas(jugadores) {
 
 		const valorRecord = ranking[0]?.racha.mejor || 0;
 		const propietarios = ranking.filter((registro) => registro.racha.mejor === valorRecord);
-		const propietariosNombres = new Set(propietarios.map((registro) => registro.jugador));
+		const propietariosVigentesNombres = new Set(
+			propietarios
+				.filter((registro) => registro.racha.mejorSegmento?.vigente)
+				.map((registro) => registro.jugador)
+		);
 		const perseguidores = jugadoresConAnalisis
 			.map((jugador) => ({
 				jugador: jugador.jugador,
 				claveImagen: jugador.claveImagen,
 				racha: jugador.analisis[tipo.clave]
 			}))
-			.filter((registro) => registro.racha.actual > 0 && !propietariosNombres.has(registro.jugador))
+			.filter((registro) => registro.racha.actual > 0 && !propietariosVigentesNombres.has(registro.jugador))
 			.sort((actual, siguiente) => {
 				if (siguiente.racha.actual !== actual.racha.actual) {
 					return siguiente.racha.actual - actual.racha.actual;
